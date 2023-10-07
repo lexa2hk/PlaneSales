@@ -1,0 +1,28 @@
+version: "3"
+services:
+  application:
+    build: ./Application
+    container_name: backend
+    ports:
+      - "8080:8080"
+    networks:
+      - marketplace_network
+#    restart: on-failure
+    depends_on:
+      - database
+
+  database:
+    build: ./Database
+    container_name: database
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    networks:
+      - marketplace_network
+
+networks:
+  marketplace_network:
