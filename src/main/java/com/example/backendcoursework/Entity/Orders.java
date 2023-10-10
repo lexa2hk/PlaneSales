@@ -1,12 +1,14 @@
 package com.example.backendcoursework.Entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Date;
 
 @Entity
-@Table(name = "Order")
-public class Order {
+@Data
+@Table(name = "orders")
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,11 +18,11 @@ public class Order {
     private String paymentMethod;
 
     @ManyToOne
-    @JoinColumn(name = "PaymentStatus_idPaymentStatus", nullable = false)
+    @JoinColumn(name = "payment_status_id_payment_status", nullable = false)
     private PaymentStatus paymentStatus;
 
     @ManyToOne
-    @JoinColumn(name = "User_idUser", nullable = false)
+    @JoinColumn(name = "user_id_user", nullable = false)
     private User user;
 
     // Constructors, getters, and setters (using Lombok @Data)

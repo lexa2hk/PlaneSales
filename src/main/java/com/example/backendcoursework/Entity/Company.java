@@ -3,10 +3,11 @@ package com.example.backendcoursework.Entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Company")
+@Table(name = "company")
 public class Company {
 
     @Id
+    @GeneratedValue
     private String companyName;
 
     private String mainInfo;

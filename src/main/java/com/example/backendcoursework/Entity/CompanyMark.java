@@ -3,10 +3,11 @@ package com.example.backendcoursework.Entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "CompanyMark")
+@Table(name = "company_mark")
 public class CompanyMark {
 
     @Id
+    @GeneratedValue
     private String idCompanyMark;
 
     private String userName;
@@ -14,7 +15,7 @@ public class CompanyMark {
     private String markText;
 
     @ManyToOne
-    @JoinColumn(name = "Company_companyName", nullable = false)
+    @JoinColumn(name = "company_company_name", nullable = false)
     private Company company;
 
     // Constructors, getters, and setters (using Lombok @Data)

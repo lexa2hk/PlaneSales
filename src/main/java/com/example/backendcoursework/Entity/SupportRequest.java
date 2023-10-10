@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "SupportRequest")
+@Table(name = "support_request")
 public class SupportRequest {
 
     @Id
@@ -16,11 +16,11 @@ public class SupportRequest {
     private String requestText;
 
     @ManyToOne
-    @JoinColumn(name = "User_idUser", nullable = false)
+    @JoinColumn(name = "user_id_user", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "SupportEmployee_idSupportEmployee")
+    @JoinColumn(name = "support_employee_id_support_employee")
     private SupportEmployee supportEmployee;
 
 

@@ -6,19 +6,19 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Flight_has_Company")
+@Table(name = "flight_has_company")
 @IdClass(FlightCompanyPK.class)
 public class FlightCompany implements Serializable {
 
     //TODO: deal with m2m relationship
     @Id
     @ManyToOne
-    @JoinColumn(name = "Flight_idFlight", nullable = false)
+    @JoinColumn(name = "flight_id_flight", nullable = false)
     private Flight flight;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "Company_companyName", nullable = false)
+    @JoinColumn(name = "company_company_name", nullable = false)
     private Company company;
 
 

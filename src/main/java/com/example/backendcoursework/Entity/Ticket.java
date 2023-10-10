@@ -13,12 +13,12 @@ public class Ticket {
     private String ticketLink;
 
     @ManyToOne
-    @JoinColumn(name = "Place_idPlace", nullable = false)
+    @JoinColumn(name = "place_id_place", nullable = false)
     private Place place;
 
     @ManyToOne
-    @JoinColumn(name = "Order_idOrder", nullable = false)
-    private Order order;
+    @JoinColumn(name = "order_id_order", nullable = false)
+    private Orders order;
 
 
 }

@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Receipt")
+@Table(name = "receipt")
 public class Receipt {
 
     @Id
@@ -17,11 +17,11 @@ public class Receipt {
     private Date closeTime;
 
     @ManyToOne
-    @JoinColumn(name = "User_idUser", nullable = false)
+    @JoinColumn(name = "user_id_user", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "PaymentStatus_idPaymentStatus", nullable = false)
+    @JoinColumn(name = "payment_status_id_payment_status", nullable = false)
     private PaymentStatus paymentStatus;
 
     // Constructors, getters, and setters (using Lombok @Data)

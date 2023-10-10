@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Data
-@Table(name = "SupportEmployee")
+@Table(name = "support_employee")
 public class SupportEmployee {
 
     @Id
@@ -15,7 +15,7 @@ public class SupportEmployee {
     private int idSupportEmployee;
 
     private int responseStat;
-    private boolean accessible;
+    private int is_accessible;
     private Date lastSeen;
 
 

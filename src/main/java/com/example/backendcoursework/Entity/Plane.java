@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Plane")
+@Table(name = "plane")
 public class Plane {
 
     @Id
@@ -17,11 +17,11 @@ public class Plane {
     private Date maintenance;
 
     @ManyToOne
-    @JoinColumn(name = "TechnicalStatus_idTechnicalStatus", nullable = false)
+    @JoinColumn(name = "technical_status_id_technical_status", nullable = false)
     private TechnicalStatus technicalStatus;
 
     @ManyToOne
-    @JoinColumn(name = "Flight_idFlight", nullable = false)
+    @JoinColumn(name = "flight_id_flight", nullable = false)
     private Flight flight;
 
 
