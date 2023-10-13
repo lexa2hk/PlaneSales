@@ -1,0 +1,26 @@
+### Register User
+POST http://localhost:8080/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "firstname": "Alex",
+  "lastname": "Smolnikov",
+  "email":  "lexa2hk@gmail.com",
+  "password": "password",
+  "role":  "ADMIN"
+}
+
+### Login
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email":  "lexa2hk@gmail.com",
+  "password": "$2a$10$UkhRNkWpuhUZs.YeOEXRHeys1m/wQa6z7g52sNfZM3mdnQX6E4gKi"
+}
+
+> {% client.global.set("auth-token", response.body.access_token);  %}
+
+### Query the Demo endpoint
+GET http://localhost:8080/api/v1/ping
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsZXhhMmhrQGdtYWlsLmNvbSIsImlhdCI6MTY5NzIyMDk4NCwiZXhwIjoxNjk3MjIwOTg0fQ.Ho8QAn_4l6Dj7GUX760bJB7paATcnsvy3ruQg8w4gak
