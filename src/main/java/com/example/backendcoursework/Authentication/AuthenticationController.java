@@ -16,14 +16,14 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
-//        if (authenticationService.isRegistered(request.getEmail())) {
-//            return ResponseEntity.badRequest().body(AuthenticationResponse.builder().build());
-//        }
+        if (authenticationService.isRegistered(request.getEmail())) {
+            return ResponseEntity.badRequest().body(null);
+        }
         return ResponseEntity.ok(authenticationService.register(request));
     }
 
-    //todo fix login 403 (motherfucking crap)
-    @PostMapping("/login")
+
+    @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
