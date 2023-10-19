@@ -2,6 +2,7 @@ package com.example.backendcoursework.Controller;
 
 import com.example.backendcoursework.Entity.User;
 import com.example.backendcoursework.Repository.UserRepository;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@Hidden
 public class UserController {
 
     private final UserRepository userRepository;
