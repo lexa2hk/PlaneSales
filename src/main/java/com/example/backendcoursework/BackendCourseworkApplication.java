@@ -28,7 +28,7 @@ public class BackendCourseworkApplication {
                     .password("password")
                     .role(Role.ADMIN)
                     .build();
-            System.out.println("Admin token: " + service.register(admin).getToken());
+            System.out.println("Admin token: " + service.register(admin).getAccessToken());
 
         };
     }

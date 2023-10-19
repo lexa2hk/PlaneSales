@@ -1,6 +1,7 @@
 package com.example.backendcoursework.Authentication;
 
 
+import com.example.backendcoursework.Entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -20,6 +21,10 @@ import java.util.function.Function;
 public class JwtService {
 
     private static final String SECRET_KEY="C41BFD092A67150F695B5C9E49BCA44FDF4C2C8B10690B055419737453C6A0BD";
+
+    private static final long jwtExpiration = 604800000 ;
+
+    private static final long refreshExpiration = 604800000;
     public String extractUsername(String token) {
         return extractClaim(token,Claims::getSubject);
     }
@@ -72,4 +77,25 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+
+    private String buildToken(
+            Map<String, Object> extraClaims,
+            UserDetails userDetails,
+            long expiration
+    ) {
+        return Jwts
+                .builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String generateRefreshToken(
+            UserDetails userDetails
+    ) {
+        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
+    }
 }

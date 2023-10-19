@@ -1,6 +1,7 @@
 package com.example.backendcoursework.Entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
 @Table(name = "company")
