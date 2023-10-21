@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@Deprecated
 @Hidden
 public class UserController {
 

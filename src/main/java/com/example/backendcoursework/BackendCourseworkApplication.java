@@ -2,7 +2,7 @@ package com.example.backendcoursework;
 
 import com.example.backendcoursework.Authentication.AuthenticationService;
 import com.example.backendcoursework.Authentication.RegisterRequest;
-import com.example.backendcoursework.Entity.Role;
+import com.example.backendcoursework.Roles.Role;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

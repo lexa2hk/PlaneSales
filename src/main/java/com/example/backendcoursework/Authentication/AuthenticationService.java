@@ -1,16 +1,13 @@
 package com.example.backendcoursework.Authentication;
 
 
-import com.example.backendcoursework.Entity.Role;
 import com.example.backendcoursework.Entity.User;
 import com.example.backendcoursework.Repository.UserRepository;
 import com.example.backendcoursework.Token.Token;
 import com.example.backendcoursework.Token.TokenRepository;
 import com.example.backendcoursework.Token.TokenType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import javax.naming.AuthenticationException;
 import java.io.IOException;
 
 @Service
