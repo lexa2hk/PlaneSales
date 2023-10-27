@@ -1,6 +1,7 @@
 package com.example.backendcoursework.Controller;
 
 import com.example.backendcoursework.Entity.Flight;
+import com.example.backendcoursework.Service.CompanyService;
 import com.example.backendcoursework.Service.FlightService;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,12 @@ import java.util.logging.Logger;
 public class AdminController {
 
     private final FlightService flightService;
+    private final CompanyService companyService;
 
     @GetMapping
     public String get() {
+        companyService.fillCompanies();
+        flightService.defineCompaniesToFlights();
         return "GET:: admin controller";
     }
 

@@ -1,17 +1,21 @@
 package com.example.backendcoursework.Entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Table(name = "company")
 public class Company {
 
     @Id
-    @GeneratedValue
     private String companyName;
 
     private String mainInfo;
@@ -21,9 +25,11 @@ public class Company {
 
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "flight_has_company",
-            joinColumns = @JoinColumn(name = "company_company_name", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "flight_id_flight", nullable = false))
+//    @JoinTable(
+//            name = "flight_company",
+//            joinColumns = @JoinColumn(name = "company_company_name", nullable = false),
+//            inverseJoinColumns = @JoinColumn(name = "flight_id_flight", nullable = false)
+//    )
     private List<Flight> flights = new ArrayList<>();
 
 }

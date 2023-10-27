@@ -1,16 +1,15 @@
 package com.example.backendcoursework.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
+import java.util.LinkedList;
 
 @Entity
 @Table(name = "flight")
-@Data
+@Getter
+@Setter
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -25,10 +24,12 @@ public class Flight {
     private Integer duration;
 
     @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "flight_has_company",
-            joinColumns = @JoinColumn(name = "flight_id_flight", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "company_company_name", nullable = false))
-    private List<Company> companies;
+//    @JoinTable(
+//            name = "flight_company",
+//            joinColumns = @JoinColumn(name = "flight_id_flight", nullable = false),
+//            inverseJoinColumns = @JoinColumn(name = "company_company_name", nullable = false)
+//    )
+    private List<Company> companies = new LinkedList<>();
 
 
 

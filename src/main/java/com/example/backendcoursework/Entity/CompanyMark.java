@@ -1,14 +1,19 @@
 package com.example.backendcoursework.Entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "company_mark")
 public class CompanyMark {
 
     @Id
     @GeneratedValue
-    private String idCompanyMark;
+    private int idCompanyMark;
 
     private String userName;
     private String mark;

@@ -1,9 +1,9 @@
 package com.example.backendcoursework.Repository;
 
-import com.example.backendcoursework.Entity.Company;
+import com.example.backendcoursework.Entity.Plane;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
-public interface CompanyRepository extends CrudRepository<Company, String>{
-    Company findByCompanyName(String companyName);
+public interface PlaneRepository extends CrudRepository<Plane, Integer> {
+    Iterable<Plane> findAllByFlight_Route(String route);
 }
