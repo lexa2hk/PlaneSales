@@ -3,8 +3,10 @@ package com.example.backendcoursework.Service;
 
 import com.example.backendcoursework.Entity.Flight;
 import com.example.backendcoursework.Entity.Plane;
+import com.example.backendcoursework.Entity.TechnicalStatus;
 import com.example.backendcoursework.Repository.FlightRepository;
 import com.example.backendcoursework.Repository.PlaneRepository;
+import com.example.backendcoursework.Repository.TechnicalStatusRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import java.util.Random;
 public class PlaneService {
     private final PlaneRepository planeRepository;
     private final FlightService flightService;
+    private final TechnicalStatusRepository technicalStatusRepository;
 
     public List<Plane> getPlanes(){
         return (List<Plane>) planeRepository.findAll();
@@ -31,20 +34,56 @@ public class PlaneService {
 
 
 
-    private List<Plane> fillPlanes() {
-        //flight and companies are created, now generate a plane for each flight
-        Plane plane = new Plane();
+    /**
+     * Generates a list of planes by filling them with flights and assigning random values to their properties.
+     *
+     * @return         	The list of generated planes.
+     */
+    public List<Plane> fillPlanes() {
+        //flights are filled!
         Iterable<Flight> flights = flightService.getFlights();
+        initializeTechnicalStatus();
+        List<Plane> planes = new LinkedList<>(); // Create a list to store the generated planes
+
         for (Flight flight : flights) {
+            Plane plane = new Plane(); // Create a new Plane object for each flight
             plane.setFlight(flight);
             Random random = new Random();
 
             plane.setCapacity(random.nextInt(100));
             plane.setModel("Model" + random.nextInt(100));
             plane.setCalSign(String.valueOf(1000 + random.nextInt(9000)));
-            // todo: fill plane with random data
+
+            // Generate a random Date for maintenance
+            long now = System.currentTimeMillis();
+            long randomMaintenanceTime = now + (random.nextInt(365) * 24 * 60 * 60 * 1000); // Random date within a year
+            Date maintenanceDate = new Date(randomMaintenanceTime);
+            plane.setMaintenance(maintenanceDate);
+
+            //todo: implement technical status enumeration and replace strings with enums
+            plane.setTechnicalStatus(technicalStatusRepository.findByStatus("Operational").orElse(null));
+//            plane.setTechnicalStatus(technicalStatusRepository.findById(random.nextInt(3)).orElse(null));
+
+            // Save the plane to the database
             planeRepository.save(plane);
+
+            planes.add(plane); // Add the generated plane to the list
         }
-        return null;
+        return planes; // Return the list of generated planes
     }
+
+
+
+    public List<TechnicalStatus> initializeTechnicalStatus(){
+        List<TechnicalStatus> technicalStatuses = new LinkedList<>();
+        String[] statuses = {"Operational", "Repair", "Retired"};
+        for(String status : statuses){
+           TechnicalStatus technicalStatus = new TechnicalStatus();
+           technicalStatus.setStatus(status);
+           technicalStatuses.add(technicalStatus);
+        }
+
+        return (List<TechnicalStatus>) technicalStatusRepository.saveAll(technicalStatuses);
+    }
+
 }

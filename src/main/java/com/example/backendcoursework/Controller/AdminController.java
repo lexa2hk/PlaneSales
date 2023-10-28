@@ -1,8 +1,10 @@
 package com.example.backendcoursework.Controller;
 
 import com.example.backendcoursework.Entity.Flight;
+import com.example.backendcoursework.Entity.Plane;
 import com.example.backendcoursework.Service.CompanyService;
 import com.example.backendcoursework.Service.FlightService;
+import com.example.backendcoursework.Service.PlaneService;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -24,6 +26,7 @@ public class AdminController {
 
     private final FlightService flightService;
     private final CompanyService companyService;
+    private final PlaneService planeService;
 
     @GetMapping
     public String get() {
@@ -34,10 +37,11 @@ public class AdminController {
 
     @PostMapping
     @Hidden
-    public ResponseEntity<List<Flight>> fillFlights() {
+    public ResponseEntity<List<Plane>> fillFlights() {
         try {
             log.info("Admin Controller: adding flights");
-            return ResponseEntity.ok(flightService.fillFlights());
+            flightService.fillFlights();
+            return ResponseEntity.ok(planeService.fillPlanes());
         } catch (Exception e) {
             log.error("Admin Controller: error while adding flights" + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

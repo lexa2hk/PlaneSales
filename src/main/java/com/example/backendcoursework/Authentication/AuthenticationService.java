@@ -115,4 +115,10 @@ public class AuthenticationService {
             }
         }
     }
+
+    public User disableUser(String username){
+        User user = userRepository.findByEmail(username).orElseThrow();
+        user.setNonLocked(false);
+        return userRepository.save(user);
+    }
 }
