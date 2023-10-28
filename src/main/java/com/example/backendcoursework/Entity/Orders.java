@@ -2,10 +2,14 @@ package com.example.backendcoursework.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
 @Data
 @Table(name = "orders")
 public class Orders {
@@ -25,7 +29,6 @@ public class Orders {
     @JoinColumn(name = "user_id_user", nullable = false)
     private User user;
 
-    // Constructors, getters, and setters (using Lombok @Data)
-    // You don't need to write these explicitly due to @Data annotation
+
 
 }
