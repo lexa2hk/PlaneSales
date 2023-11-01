@@ -106,6 +106,7 @@ public class OrderService {
         //todo randomize row name
         place.setRow_name("21A");
 
+
         place.setPlane(planeRepository.findAllByFlight_Route(flightRoute).iterator().next());
         return placeRepository.save(place);
     }
