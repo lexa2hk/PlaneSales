@@ -7,29 +7,25 @@ import com.example.backendcoursework.Repository.OrdersRepository;
 import com.example.backendcoursework.Repository.PlaceRepository;
 import com.example.backendcoursework.Repository.PlaneRepository;
 import com.example.backendcoursework.Repository.TicketRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService {
 
     private final OrdersRepository ordersRepository;
     private final TicketRepository ticketRepository;
     private final PlaceRepository placeRepository;
     private final PlaneRepository planeRepository;
+    private final ReceiptService receiptService;
 
 
-    public OrderService(OrdersRepository ordersRepository,
-                        TicketRepository ticketRepository,
-                        PlaceRepository placeRepository,
-                        PlaneRepository planeRepository) {
-        this.ordersRepository = ordersRepository;
-        this.ticketRepository = ticketRepository;
-        this.placeRepository = placeRepository;
-        this.planeRepository = planeRepository;
-    }
+
 
 
     public Orders createOrder(User user,String paymentMethod, String flightRoute){
@@ -55,12 +51,13 @@ public class OrderService {
         }
     }
 
-    public void payOrder(int orderId) throws OrderNotFoundException {
+    public Receipt payOrder(int orderId) throws OrderNotFoundException {
         Optional<Orders> orderOptional = ordersRepository.findById(orderId);
 
         if (orderOptional.isPresent()) {
             Orders order = orderOptional.get();
             order.setPaymentStatus(PaymentState.PAID);
+            return receiptService.createReciept(order);
         } else {
             throw new OrderNotFoundException("orderId: " + orderId);
         }
@@ -84,7 +81,7 @@ public class OrderService {
             Orders order = orderOptional.get();
             if(checkPayment(orderId)){
                 ticket.setOrder(order);
-                //todo generate pdf ticket as mock
+                //todo generate pdf ticket or webpage
                 ticket.setTicketLink("https://www.google.com");
                 ticketRepository.save(ticket);
                 ticket.setPlace(reservePlace(ticket, order.getFlightRoute()));
@@ -103,12 +100,18 @@ public class OrderService {
     private Place reservePlace(Ticket ticket, String flightRoute) {
         Place place = new Place();
         place.setClassType("First");
-        //todo randomize row name
-        place.setRow_name("21A");
+        place.setRow_name(randomizeRowName());
 
 
         place.setPlane(planeRepository.findAllByFlight_Route(flightRoute).iterator().next());
         return placeRepository.save(place);
+    }
+
+    private String randomizeRowName() {
+        Random random = new Random();
+        char randomLetter = (char) ('A' + random.nextInt(26));
+        int randomSeatNumber = 1 + random.nextInt(30);
+        return randomSeatNumber + String.valueOf(randomLetter);
     }
 
 
