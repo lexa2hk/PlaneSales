@@ -7,13 +7,17 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "payment_status")
+@Deprecated
 public class PaymentStatus {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPaymentStatus;
 
-    private String statusDetails;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentState statusDetails;
 
 
 }

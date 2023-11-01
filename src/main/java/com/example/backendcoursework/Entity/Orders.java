@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,14 +23,21 @@ public class Orders {
     private Date creationDate;
     private String paymentMethod;
 
-    @ManyToOne
-    @JoinColumn(name = "payment_status_id_payment_status", nullable = false)
-    private PaymentStatus paymentStatus;
+    private String flightRoute;
+
+//    @ManyToOne
+//    @JoinColumn(name = "payment_status_id_payment_status", nullable = false)
+//    private PaymentStatus paymentStatus;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentState paymentStatus;
 
     @ManyToOne
     @JoinColumn(name = "user_id_user", nullable = false)
     private User user;
 
 
+    @OneToMany(mappedBy = "order")
+    private List<Ticket> tickets = new LinkedList<>();
 
 }
