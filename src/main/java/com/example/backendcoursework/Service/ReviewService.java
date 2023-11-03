@@ -14,6 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewService {
 
+    //todo impove rewiews
+
     private final CompanyRepository companyRepository;
     private final CompanyMarkRepository companyMarkRepository;
     private final AuthenticationService authenticationService;

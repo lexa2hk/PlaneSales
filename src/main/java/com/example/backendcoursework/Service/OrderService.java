@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -25,9 +26,7 @@ public class OrderService {
     private final ReceiptService receiptService;
 
 
-
-
-
+    //todo check if flight actually exist
     public Orders createOrder(User user,String paymentMethod, String flightRoute){
         Orders order = new Orders();
         order.setUser(user);
@@ -42,26 +41,48 @@ public class OrderService {
     }
 
     public void payOrder(User user) throws OrderNotFoundException {
-        Optional<Orders> orderOptional = ordersRepository.findByUser(user);
-        if (orderOptional.isPresent()) {
-            Orders order = orderOptional.get();
+        List<Orders> orderOptional = ordersRepository.findAllByUser(user);
+        for (Orders order : orderOptional) {
             order.setPaymentStatus(PaymentState.PAID);
+            ordersRepository.save(order);
+            return;
+        }
+//        if (!orderOptional.isEmpty()) {
+//            for (Orders order : orderOptional) {
+//                order.setPaymentStatus(PaymentState.PAID);
+//                return order;
+//            }
+//        }
+//        throw new OrderNotFoundException("username: " + user.getUsername());
+    }
+
+    public void payOrder(User user, String flightRoute) throws OrderNotFoundException {
+        List<Orders> orderOptional = ordersRepository.findAllByUser(user);
+        if (!orderOptional.isEmpty()) {
+            for (Orders order : orderOptional) {
+                if (order.getFlightRoute().equals(flightRoute)) {
+                    order.setPaymentStatus(PaymentState.PAID);
+                    return;
+                }
+            }
+
         } else {
             throw new OrderNotFoundException("username: " + user.getUsername());
         }
+        return;
     }
 
-    public Receipt payOrder(int orderId) throws OrderNotFoundException {
-        Optional<Orders> orderOptional = ordersRepository.findById(orderId);
-
-        if (orderOptional.isPresent()) {
-            Orders order = orderOptional.get();
-            order.setPaymentStatus(PaymentState.PAID);
-            return receiptService.createReciept(order);
-        } else {
-            throw new OrderNotFoundException("orderId: " + orderId);
-        }
-    }
+//    public Receipt payOrder(int orderId) throws OrderNotFoundException {
+//        Optional<Orders> orderOptional = ordersRepository.findById(orderId);
+//
+//        if (orderOptional.isPresent()) {
+//            Orders order = orderOptional.get();
+//            order.setPaymentStatus(PaymentState.PAID);
+//            return receiptService.createReciept(order);
+//        } else {
+//            throw new OrderNotFoundException("orderId: " + orderId);
+//        }
+//    }
 
 
     public boolean checkPayment(int orderId) throws OrderNotFoundException {

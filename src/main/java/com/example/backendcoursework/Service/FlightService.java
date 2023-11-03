@@ -113,6 +113,8 @@ public class FlightService {
         Integer randomDuration = generateRandomDuration();
         flight.setDuration(randomDuration);
 
+        flight.setCompanies(List.of());
+
         return flightRepository.save(flight);
     }
 

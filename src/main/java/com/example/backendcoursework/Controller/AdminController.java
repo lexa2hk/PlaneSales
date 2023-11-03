@@ -1,5 +1,6 @@
 package com.example.backendcoursework.Controller;
 
+import com.example.backendcoursework.Entity.Company;
 import com.example.backendcoursework.Entity.Flight;
 import com.example.backendcoursework.Entity.Plane;
 import com.example.backendcoursework.Service.CompanyService;
@@ -28,19 +29,13 @@ public class AdminController {
     private final CompanyService companyService;
     private final PlaneService planeService;
 
-    @GetMapping
-    public String get() {
-        companyService.fillCompanies();
-        flightService.defineCompaniesToFlights();
-        return "GET:: admin controller";
-    }
 
-    @PostMapping
+    @PostMapping("/flights/fill")
     @Hidden
     public ResponseEntity<List<Plane>> fillFlights() {
         try {
             log.info("Admin Controller: adding flights");
-            flightService.fillFlights();
+            flightService.fillFlightsWithCompanies();
             return ResponseEntity.ok(planeService.fillPlanes());
         } catch (Exception e) {
             log.error("Admin Controller: error while adding flights" + e.getMessage());
@@ -48,14 +43,18 @@ public class AdminController {
         }
     }
 
-    @PutMapping
+    @PostMapping("/companies/fill")
     @Hidden
-    public String put() {
-        return "PUT:: admin controller";
+    public ResponseEntity<List<Company>> fillCompanies() {
+        try {
+            log.info("Admin Controller: adding flights");
+            companyService.fillCompanies();
+            return ResponseEntity.ok(companyService.fillCompanies());
+        } catch (Exception e) {
+            log.error("Admin Controller: error while adding flights" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
-    @DeleteMapping
-    @Hidden
-    public String delete() {
-        return "DELETE:: admin controller";
-    }
+
+
 }
