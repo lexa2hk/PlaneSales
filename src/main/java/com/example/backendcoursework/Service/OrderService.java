@@ -1,12 +1,10 @@
 package com.example.backendcoursework.Service;
 
+import com.example.backendcoursework.DTO.*;
 import com.example.backendcoursework.Entity.*;
 import com.example.backendcoursework.Exception.OrderNotFoundException;
 import com.example.backendcoursework.Exception.OrderNotPaidException;
-import com.example.backendcoursework.Repository.OrdersRepository;
-import com.example.backendcoursework.Repository.PlaceRepository;
-import com.example.backendcoursework.Repository.PlaneRepository;
-import com.example.backendcoursework.Repository.TicketRepository;
+import com.example.backendcoursework.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,26 +22,40 @@ public class OrderService {
     private final PlaceRepository placeRepository;
     private final PlaneRepository planeRepository;
     private final ReceiptService receiptService;
+    private final FlightRepository flightRepository;
+
+    public List<Orders> findAllByUser(User user) {
+        return ordersRepository.findAllByUser(user);
+    }
 
 
-    //todo check if flight actually exist
     public Orders createOrder(User user,String paymentMethod, String flightRoute){
+        if(!flightRepository.existsByRoute(flightRoute)){
+            throw new IllegalArgumentException("flight does not exist");
+        }
         Orders order = new Orders();
         order.setUser(user);
         order.setPaymentMethod(paymentMethod);
         order.setFlightRoute(flightRoute);
         order.setPaymentStatus(PaymentState.NOT_PAID);
         order.setCreationDate(new Date());
+
 //
 //        checkPayment(order,flightRoute);
 
         return ordersRepository.save(order);
     }
 
-    public void payOrder(User user) throws OrderNotFoundException {
+
+
+    public void payOrder(User user) throws OrderNotFoundException, OrderNotPaidException {
+
         List<Orders> orderOptional = ordersRepository.findAllByUser(user);
         for (Orders order : orderOptional) {
             order.setPaymentStatus(PaymentState.PAID);
+            if(order.getTickets().isEmpty()){
+                order.setTickets(List.of(createTicket(order.getIdOrder())));
+            }
             ordersRepository.save(order);
             return;
         }
@@ -56,16 +68,17 @@ public class OrderService {
 //        throw new OrderNotFoundException("username: " + user.getUsername());
     }
 
-    public void payOrder(User user, String flightRoute) throws OrderNotFoundException {
-        List<Orders> orderOptional = ordersRepository.findAllByUser(user);
-        if (!orderOptional.isEmpty()) {
-            for (Orders order : orderOptional) {
-                if (order.getFlightRoute().equals(flightRoute)) {
-                    order.setPaymentStatus(PaymentState.PAID);
-                    return;
+    public void payOrder(User user, String flightRoute) throws OrderNotFoundException, OrderNotPaidException {
+        List<Orders> orders = ordersRepository.customFindAllByRoute(flightRoute);
+        if (!orders.isEmpty()) {
+            for (Orders order : orders) {
+                order.setPaymentStatus(PaymentState.PAID);
+                if(order.getTickets().isEmpty()){
+                    order.setTickets(List.of(createTicket(order.getIdOrder())));
                 }
-            }
+                ordersRepository.save(order);
 
+            }
         } else {
             throw new OrderNotFoundException("username: " + user.getUsername());
         }
@@ -104,8 +117,9 @@ public class OrderService {
                 ticket.setOrder(order);
                 //todo generate pdf ticket or webpage
                 ticket.setTicketLink("https://www.google.com");
-                ticketRepository.save(ticket);
                 ticket.setPlace(reservePlace(ticket, order.getFlightRoute()));
+                ticketRepository.save(ticket);
+
                 return ticket;
             }else{
                 throw new OrderNotPaidException("orderId: " + orderId);
@@ -123,8 +137,7 @@ public class OrderService {
         place.setClassType("First");
         place.setRow_name(randomizeRowName());
 
-
-        place.setPlane(planeRepository.findAllByFlight_Route(flightRoute).iterator().next());
+        place.setPlane(planeRepository.findByFlightCode(flightRoute).iterator().next());
         return placeRepository.save(place);
     }
 
@@ -134,6 +147,8 @@ public class OrderService {
         int randomSeatNumber = 1 + random.nextInt(30);
         return randomSeatNumber + String.valueOf(randomLetter);
     }
+
+
 
 
 }
