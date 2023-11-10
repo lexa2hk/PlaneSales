@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  client-backend:
+    image: client:0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - service-db
+    environment:
+      - SERVER_PORT= 8080
+      - SPRING_DATASOURCE_URL=jdbc:mysql://service-db:3306/testdb
+
+  service-db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 2003
+      MYSQL_ROOT_PASSWORD: 2003
+    ports:
+      - "13306:3306"
+    restart: unless-stopped
+

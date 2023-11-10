@@ -1,11 +1,11 @@
 # BackendCoursework
 
 ## TODO:
-- [ ] dockerize
+- [x] dockerize
 - [ ] finish java code
-  - [ ] create dtos
+  - [x] create dtos
   - [ ] write unit tests (user accessible logic)
-  - [ ] finish booking logic
+  - [x] finish booking logic
 - [ ] write postman tests
 - [ ] .docx
 - [ ] .pptx
