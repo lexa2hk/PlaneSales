@@ -65,4 +65,12 @@ public class DtoBuilder {
                 .annualPassTraffic(company.getAnnualPassTraffic())
                 .build()).toList();
     }
+
+    private CompanyMarkDto buildCompanyMarkDto(@NotNull CompanyMark companyMark) {
+        return new CompanyMarkDto(
+                companyMark.getMark(),
+                companyMark.getMarkText(),
+                companyMark.getCompany().getCompanyName()
+        );
+   }
 }

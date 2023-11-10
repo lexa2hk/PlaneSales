@@ -14,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    //todo impove rewiews
 
     private final CompanyRepository companyRepository;
     private final CompanyMarkRepository companyMarkRepository;
@@ -42,8 +41,13 @@ public class ReviewService {
 
     }
 
+    public List<CompanyMark> deleteCompanyMark(String username){
+        List<CompanyMark> marksToDelete = companyMarkRepository.findByUserName(username);
+        companyMarkRepository.deleteAll(marksToDelete);
+        return marksToDelete;
+    }
+
     public void banUser(String username) {
-        // First, you need to find and delete any company marks associated with the banned user
         List<CompanyMark> marksToDelete = companyMarkRepository.findByUserName(username);
         companyMarkRepository.deleteAll(marksToDelete);
 
