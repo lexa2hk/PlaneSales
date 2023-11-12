@@ -51,6 +51,9 @@ public class OrderService {
     public void payOrder(User user) throws OrderNotFoundException, OrderNotPaidException {
 
         List<Orders> orderOptional = ordersRepository.findAllByUser(user);
+        if(orderOptional.isEmpty()) {
+            throw new OrderNotFoundException("username: " + user.getEmail());
+        }
         for (Orders order : orderOptional) {
             order.setPaymentStatus(PaymentState.PAID);
             if(order.getTickets().isEmpty()){
@@ -68,6 +71,7 @@ public class OrderService {
 //        throw new OrderNotFoundException("username: " + user.getUsername());
     }
 
+    //todo remove double request 403 then 200
     public void payOrder(User user, String flightRoute) throws OrderNotFoundException, OrderNotPaidException {
         List<Orders> orders = ordersRepository.customFindAllByRoute(flightRoute);
         if (!orders.isEmpty()) {
