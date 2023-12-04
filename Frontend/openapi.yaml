@@ -1,0 +1,484 @@
+openapi: 3.0.1
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Ping
+  description: Ping endpoint
+- name: Flights
+  description: Flights API
+- name: Orders
+  description: Orders API
+paths:
+  /api/v1/review:
+    get:
+      tags:
+      - review-controller
+      operationId: getAllReviews
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompanyMarkDto'
+    post:
+      tags:
+      - review-controller
+      operationId: addReview
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CompanyMarkDto'
+  /api/v1/order/pay:
+    post:
+      tags:
+      - Orders
+      summary: endpoint for pay an order
+      description: Pay an order
+      operationId: payOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        required: true
+      responses:
+        "200":
+          description: Successful order payment
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  type: string
+        "403":
+          description: Not authorized/Internal Server Error
+          content:
+            '*/*':
+              schema:
+                type: string
+      security:
+      - bearerAuth: []
+  /api/v1/order/create:
+    post:
+      tags:
+      - Orders
+      summary: endpoint for creating an order
+      description: Create an order
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        required: true
+      responses:
+        "200":
+          description: Successful order creation
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrdersDto'
+        "403":
+          description: Not authorized/Internal Server Error
+          content:
+            '*/*':
+              schema:
+                type: string
+      security:
+      - bearerAuth: []
+  /api/v1/auth/register:
+    post:
+      tags:
+      - authentication-controller
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+  /api/v1/auth/refresh-token:
+    post:
+      tags:
+      - authentication-controller
+      operationId: refreshToken
+      responses:
+        "200":
+          description: OK
+  /api/v1/auth/authenticate:
+    post:
+      tags:
+      - authentication-controller
+      operationId: authenticate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+  /api/v1/ping:
+    get:
+      tags:
+      - Ping
+      summary: This is a simple ping endpoint which requires jwt
+      description: Ping endpoint
+      operationId: ping
+      responses:
+        "200":
+          description: Success
+          content:
+            '*/*':
+              schema:
+                type: string
+        "403":
+          description: Unauthorized / Invalid Token
+          content:
+            '*/*':
+              schema:
+                type: string
+      security:
+      - bearerAuth: []
+  /api/v1/order/status:
+    get:
+      tags:
+      - Orders
+      summary: Get order status
+      description: Get order status
+      operationId: getOrderStatus
+      parameters:
+      - name: orderId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Successful
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentStatusResponse'
+        "403":
+          description: Not authorized/Internal Server Error
+          content:
+            '*/*':
+              schema:
+                type: string
+      security:
+      - bearerAuth: []
+  /api/v1/order/all:
+    get:
+      tags:
+      - Orders
+      summary: Get all orders of authorized user
+      description: Get all orders
+      operationId: findAllByUser
+      responses:
+        "200":
+          description: Successful
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrdersDto'
+        "403":
+          description: Not authorized/Internal Server Error
+          content:
+            '*/*':
+              schema:
+                type: string
+      security:
+      - bearerAuth: []
+  /api/v1/flights:
+    get:
+      tags:
+      - Flights
+      summary: Get a list of all available flights
+      description: Get a list of flights
+      operationId: getFlights
+      responses:
+        "200":
+          description: Successful retrieval of flights
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Flight'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                type: string
+        "403":
+          description: Not authorized
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Flight'
+      security:
+      - bearerAuth: []
+  /api/v1/flights/{code}:
+    get:
+      tags:
+      - Flights
+      summary: Get a flight by its route code
+      description: Get a flight by code
+      operationId: getFlightByRoute
+      parameters:
+      - name: code
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful retrieval of the flight
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Flight'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Flight'
+        "403":
+          description: Not authorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Flight'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    ReviewRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        companyName:
+          type: string
+        mark:
+          type: string
+        markText:
+          type: string
+    CompanyMarkDto:
+      type: object
+      properties:
+        mark:
+          type: string
+        markText:
+          type: string
+        companyName:
+          type: string
+    OrderRequest:
+      type: object
+      properties:
+        paymentMethod:
+          type: string
+        flightRoute:
+          type: string
+    CompanyDto:
+      type: object
+      properties:
+        mainInfo:
+          type: string
+        park:
+          type: string
+        since:
+          type: string
+        annualPassTraffic:
+          type: integer
+          format: int32
+    FlightDto:
+      type: object
+      properties:
+        route:
+          type: string
+        passengerQty:
+          type: integer
+          format: int32
+        duration:
+          type: integer
+          format: int32
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyDto'
+    OrdersDto:
+      type: object
+      properties:
+        idOrder:
+          type: integer
+          format: int32
+        creationDate:
+          type: string
+          format: date-time
+        paymentMethod:
+          type: string
+        flightRoute:
+          type: string
+        paymentStatus:
+          type: string
+          enum:
+          - PENDING
+          - NOT_PAID
+          - PARTIALLY_PAID
+          - PAID
+          - REFUNDED
+        tickets:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketDto'
+    PlaceDto:
+      type: object
+      properties:
+        row_name:
+          type: string
+        classType:
+          type: string
+        plane:
+          $ref: '#/components/schemas/PlaneDto'
+    PlaneDto:
+      type: object
+      properties:
+        model:
+          type: string
+        calSign:
+          type: string
+        capacity:
+          type: integer
+          format: int32
+        flight:
+          $ref: '#/components/schemas/FlightDto'
+    TicketDto:
+      type: object
+      properties:
+        ticketLink:
+          type: string
+        place:
+          $ref: '#/components/schemas/PlaceDto'
+    RegisterRequest:
+      type: object
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+          enum:
+          - USER
+          - ADMIN
+          - MANAGER
+    AuthenticationResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        refresh_token:
+          type: string
+    AuthenticationRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    PaymentStatusResponse:
+      type: object
+      properties:
+        paymentStatus:
+          type: string
+          enum:
+          - PENDING
+          - NOT_PAID
+          - PARTIALLY_PAID
+          - PAID
+          - REFUNDED
+    Company:
+      type: object
+      properties:
+        companyName:
+          type: string
+        mainInfo:
+          type: string
+        park:
+          type: string
+        since:
+          type: string
+        annualPassTraffic:
+          type: integer
+          format: int32
+        flights:
+          type: array
+          items:
+            $ref: '#/components/schemas/Flight'
+    Flight:
+      type: object
+      properties:
+        idFlight:
+          type: integer
+          format: int32
+        route:
+          type: string
+        passengerQty:
+          type: integer
+          format: int32
+        duration:
+          type: integer
+          format: int32
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: JWT auth description
+      in: header
+      scheme: bearer
+      bearerFormat: JWT

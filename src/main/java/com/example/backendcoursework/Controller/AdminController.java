@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
+@CrossOrigin
 @Slf4j
 @Hidden
 public class AdminController {

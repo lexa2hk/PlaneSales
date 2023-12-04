@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/review")
 @Slf4j
+@CrossOrigin
 public class ReviewController {
     private final ReviewService reviewService;
 

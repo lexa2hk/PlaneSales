@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Orders</title>
+</head>
+<body>
+  <h1>Orders</h1>
+  <div id="ordersList"></div>
+
+  <script>
+    // Function to fetch orders using the stored JWT token
+    function fetchOrders() {
+      const jwtToken = getCookie('jwt_token');
+      if (!jwtToken) {
+        // Handle scenario where user is not logged in
+        window.location.href = '/login'; // Redirect to login page
+        return;
+      }
+
+      // Fetch orders using the JWT token
+      fetch('http://localhost:8080/api/v1/order/all', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${jwtToken}`
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch orders');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Display orders in the DOM
+        const ordersList = document.getElementById('ordersList');
+        if (data && data.length > 0) {
+          const ordersHTML = data.map(order => {
+            return `<div>Order ID: ${order.idOrder}, Flight Route: ${order.flightRoute}, Payment Status: ${order.paymentStatus}</div>`;
+          }).join('');
+          ordersList.innerHTML = ordersHTML;
+        } else {
+          ordersList.innerHTML = 'No orders found';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Handle error scenario
+        ordersList.innerHTML = 'Failed to fetch orders';
+      });
+    }
+
+    // Function to get cookie value by name
+    function getCookie(name) {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        const [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName.trim() === name) {
+          return cookieValue;
+        }
+      }
+      return null;
+    }
+
+    // Call fetchOrders when the page loads
+    window.onload = fetchOrders;
+  </script>
+
+
+
+<h1>Create Order</h1>
+  <form id="orderForm">
+    <label for="paymentMethod">Payment Method:</label><br>
+    <input type="text" id="paymentMethod" name="paymentMethod"><br>
+    <label for="flightRoute">Flight Route:</label><br>
+    <input type="text" id="flightRoute" name="flightRoute"><br><br>
+    <input type="submit" value="Create Order">
+  </form>
+
+  <script>
+    document.getElementById("orderForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      const paymentMethod = formData.get('paymentMethod');
+      const flightRoute = formData.get('flightRoute');
+
+      const jwtToken = getCookie('jwt_token');
+      if (!jwtToken) {
+        // Handle scenario where user is not logged in
+        window.location.href = '/login'; // Redirect to login page
+        return;
+      }
+
+      // Perform a fetch request to create an order
+      fetch('http://localhost:8080/api/v1/order/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwtToken}`
+        },
+        body: JSON.stringify({ paymentMethod, flightRoute })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to create order');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Handle success scenario, e.g., display success message
+        alert('Order created successfully!');
+        // Redirect or perform necessary actions after successful order creation
+        window.location.href = '/orders'; // Redirect to orders page
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to create order. Please try again.');
+      });
+    });
+
+    function getCookie(name) {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        const [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName.trim() === name) {
+          return cookieValue;
+        }
+      }
+      return null;
+    }
+  </script>
+</body>
+</html>

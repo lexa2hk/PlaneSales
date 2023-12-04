@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reviews</title>
+</head>
+<body>
+  <h1>Reviews</h1>
+
+  <div id="reviewsList">
+    <!-- Reviews will be displayed here -->
+  </div>
+
+  <h2>Add Review</h2>
+  <form id="reviewForm">
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username"><br>
+    <label for="companyName">Company Name:</label><br>
+    <input type="text" id="companyName" name="companyName"><br>
+    <label for="mark">Mark:</label><br>
+    <input type="text" id="mark" name="mark"><br>
+    <label for="markText">Mark Text:</label><br>
+    <input type="text" id="markText" name="markText"><br><br>
+    <input type="submit" value="Submit">
+  </form>
+
+  <script>
+    // Function to fetch and display reviews
+    function fetchReviews() {
+      fetch('http://localhost:8080/api/v1/review', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${getCookie('jwt_token')}`
+        }
+      })
+      .then(response => response.json())
+      .then(reviews => {
+        const reviewsList = document.getElementById('reviewsList');
+        reviewsList.innerHTML = '';
+        reviews.forEach(review => {
+          const reviewItem = document.createElement('div');
+          reviewItem.innerHTML = `
+            <strong>Username:</strong> ${review.username}<br>
+            <strong>Company Name:</strong> ${review.companyName}<br>
+            <strong>Mark:</strong> ${review.mark}<br>
+            <strong>Mark Text:</strong> ${review.markText}<br><br>
+          `;
+          reviewsList.appendChild(reviewItem);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching reviews:', error);
+        alert('Failed to fetch reviews. Please try again.');
+      });
+    }
+
+    document.getElementById("reviewForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      const username = formData.get('username');
+      const companyName = formData.get('companyName');
+      const mark = formData.get('mark');
+      const markText = formData.get('markText');
+
+      fetch('http://localhost:8080/api/v1/review', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getCookie('jwt_token')}`
+        },
+        body: JSON.stringify({ username, companyName, mark, markText })
+      })
+      .then(response => response.json())
+      .then(newReview => {
+        // If successfully added, fetch and display updated reviews
+        fetchReviews();
+        alert('Review added successfully!');
+      })
+      .catch(error => {
+        console.error('Error adding review:', error);
+        alert('Failed to add review. Please try again.');
+      });
+    });
+
+    // Function to get cookie value by name
+    function getCookie(name) {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        const [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName.trim() === name) {
+          return cookieValue;
+        }
+      }
+      return '';
+    }
+
+    // Fetch reviews when the page loads
+    fetchReviews();
+  </script>
+</body>
+</html>

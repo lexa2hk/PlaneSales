@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flights</title>
+</head>
+<body>
+  <h1>Flights</h1>
+  <div id="flightsList"></div>
+
+  <script>
+    // Fetch flights using the stored JWT token
+    const token = getCookie('jwt_token');
+
+    if (!token) {
+      // Redirect to login page if the token is not found
+      window.location.href = '/login'; // Redirect to the login page
+    } else {
+      fetch('http://localhost:8080/api/v1/flights', {
+        method: 'GET',
+        
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch flights');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Display the list of flights
+        const flightsList = document.getElementById('flightsList');
+        data.forEach(flight => {
+          const flightDiv = document.createElement('div');
+          flightDiv.innerHTML = `<strong>${flight.route}</strong><br>
+                                Passenger Quantity: ${flight.passengerQty}<br>
+                                Duration: ${flight.duration} minutes<br>
+                                Company: ${flight.companies[0].companyName}<br><br>`;
+          flightsList.appendChild(flightDiv);
+        });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to fetch flights. Please try again later.');
+      });
+    }
+
+    // Function to get a cookie value by name
+    function getCookie(name) {
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        const [cookieName, cookieValue] = cookie.split('=');
+        if (cookieName.trim() === name) {
+          return cookieValue;
+        }
+      }
+      return null;
+    }
+  </script>
+
+
+
+<h1>Get Flight by Route</h1>
+<form id="flightByRouteForm">
+  <label for="routeCode">Enter Route Code:</label><br>
+  <input type="text" id="routeCode" name="routeCode"><br><br>
+  <input type="submit" value="Get Flight">
+</form>
+<div id="flightDetails"></div>
+
+<script>
+  document.getElementById("flightByRouteForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const routeCode = document.getElementById('routeCode').value.trim();
+
+    const token = getCookie('jwt_token');
+
+    if (!token) {
+      // Redirect to login page if the token is not found
+      window.location.href = '/login'; // Redirect to the login page
+    } else {
+      fetch(`http://localhost:8080/api/v1/flights/${routeCode}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch flight');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Display flight details
+        const flightDetails = document.getElementById('flightDetails');
+        flightDetails.innerHTML = `<strong>Route:</strong> ${data.route}<br>
+                                    <strong>Passenger Quantity:</strong> ${data.passengerQty}<br>
+                                    <strong>Duration:</strong> ${data.duration} minutes`;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to fetch flight. Please try again with a valid route code.');
+      });
+    }
+  });
+
+  // Function to get a cookie value by name
+  function getCookie(name) {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      const [cookieName, cookieValue] = cookie.split('=');
+      if (cookieName.trim() === name) {
+        return cookieValue;
+      }
+    }
+    return null;
+  }
+</script>
+</body>
+</html>

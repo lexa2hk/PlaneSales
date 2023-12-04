@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/order")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "bearerAuth")
+@CrossOrigin
 @Tag(name = "Orders", description = "Orders API")
 public class OrderController {
 
