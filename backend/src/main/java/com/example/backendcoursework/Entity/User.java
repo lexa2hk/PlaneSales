@@ -19,7 +19,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "User")
+//User is reserved keyword
+//detail: https://www.drupal.org/docs/develop/coding-standards/list-of-sql-reserved-words
+@Table(name = "UserData")
 public class User implements UserDetails {
 
     @Id
