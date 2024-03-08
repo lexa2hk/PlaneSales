@@ -17,8 +17,15 @@ pipeline{
                 git branch: 'master',  credentialsId: 'GitHub', url: 'https://github.com/lexa2hk/PlaneSales/'
             }
         }
-        // stage("Build"){
-            
-        // }
+        stage("Build Application"){
+            steps{
+                sh "cd backend && mvn clean package"
+            }
+        }
+        stage("Test Application"){
+            steps{
+                sh "cd backend && mvn test"
+            }
+        }
     }
 }
