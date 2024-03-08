@@ -14,7 +14,7 @@ pipeline{
         }
         stage("Checkout from SCM"){
             steps{
-                git branch: 'master',  credentialsId: 'GitHub', url: 'https://github.com/leha2hk/PlaneSales'
+                git branch: 'master',  credentialsId: 'GitHub', url: 'https://github.com/lexa2hk/PlaneSales/'
             }
         }
         // stage("Build"){
