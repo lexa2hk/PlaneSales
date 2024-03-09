@@ -27,5 +27,13 @@ pipeline{
                 sh "cd backend && mvn test"
             }
         }
+        stage("SonarQube Static Analysis"){
+            steps{
+                withSonarQubeEnv(credentialsID: 'jenkins-sonarqube-token'){
+                    sh "cd backend && mvn sonar:sonar -Dsonar.host.url=http://192.168.1.7:9000"
+                }
+                sh "cd backend && mvn soanr:sonar"
+            }
+        }
     }
 }
