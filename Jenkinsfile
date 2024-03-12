@@ -13,7 +13,6 @@ pipeline{
         DOCKER_PASS = credentials('yc-oauth')
         DOCKER_IMAGE = "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-        YC_REG_ID = credentials('yc-registry-id')
     }
     stages{
         stage("Workspace Cleanup"){
