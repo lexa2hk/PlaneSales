@@ -55,7 +55,7 @@ pipeline{
             steps{
                 script{
                     docker.withRegistry("https://cr.yandex/crp81nvosn3h45fo9pqf", 'yc-oauth'){
-                        def dockerImage = docker.build("${DOCKER_IMAGE}","backend/")
+                        def dockerImage = docker.build("crp81nvosn3h45fo9pqf/${DOCKER_IMAGE}","backend/")
                         dockerImage.push("${IMAGE_TAG}")
                         dockerImage.push("latest")
                     }
