@@ -7,7 +7,7 @@ pipeline{
         maven 'Maven3'
     }
     environment{
-        APP_NAME = "plane-sales"
+        APP_NAME = "planesales"
         RELEASE = "1.0.0"
         DOCKER_USER = "oauth"
         DOCKER_PASS = credentials('yc-oauth')
