@@ -9,10 +9,11 @@ pipeline{
     environment{
         APP_NAME = "PlaneSales"
         RELEASE = "1.0.0"
-        DOCKER_USER = "lexa2hk"
-        DOCKER_PASS = credentials('dockerhub-pass')
-        DOCKER_IMAGE = "${DOCKER_USER}/${APP_NAME}"
+        DOCKER_USER = "oauth"
+        DOCKER_PASS = credentials('yc-oauth')
+        DOCKER_IMAGE = "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+        YC_REG_ID = credentials('yc-registry-id')
     }
     stages{
         stage("Workspace Cleanup"){
@@ -54,7 +55,7 @@ pipeline{
         stage("Build & Push DockerHub Image"){
             steps{
                 script{
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_PASS}"){
+                    docker.withRegistry("cr.yandex/", "${YC_REG_ID}", 'yc-oauth'){
                         def dockerImage = docker.build("${DOCKER_IMAGE}","-f backend/Dockerfile .")
                         dockerImage.push("${IMAGE_TAG}")
                         dockerImage.push("latest")
