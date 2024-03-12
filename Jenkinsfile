@@ -58,7 +58,7 @@ pipeline{
                         dockerImage = docker.build("${DOCKER_IMAGE}","-f backend/Dockerfile .")
                     }
 
-                    docker.withRegistry('',DOCKER_PASS){
+                    docker.withRegistry('https://index.docker.io/v1/',DOCKER_PASS){
                         dockerImage.push("${IMAGE_TAG}")
                         dockerImage.push("latest")
                     }
