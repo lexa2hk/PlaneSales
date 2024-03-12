@@ -2,11 +2,11 @@
 # USAGE: Replace all taco-cloud-0.0.1-SNAPSHOT.jar with your own jar file from /target
 #
 ARG JAR_FILE=planesales-0.0.1-SNAPSHOT.jar
-FROM maven:3-eclipse-temurin-21 as build
+FROM maven:3.9.6-eclipse-temurin-21 as build
 ARG JAR_FILE
 RUN mkdir /usr/src/project
 COPY . /usr/src/project
-WORKDIR /usr/src/project
+WORKDIR /usr/src/project/
 
 RUN mvn package -DskipTests
 
