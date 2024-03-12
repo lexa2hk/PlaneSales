@@ -55,7 +55,7 @@ pipeline{
         stage("Build & Push DockerHub Image"){
             steps{
                 script{
-                    docker.withRegistry("cr.yandex/", "${YC_REG_ID}", 'yc-oauth'){
+                    docker.withRegistry("cr.yandex/crpcuq9ts77lf7h4mkj2", 'yc-oauth'){
                         def dockerImage = docker.build("${DOCKER_IMAGE}","-f backend/Dockerfile .")
                         dockerImage.push("${IMAGE_TAG}")
                         dockerImage.push("latest")
