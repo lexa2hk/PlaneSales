@@ -54,11 +54,8 @@ pipeline{
         stage("Build & Push DockerHub Image"){
             steps{
                 script{
-                    docker.withRegistry('',DOCKER_PASS){
-                        dockerImage = docker.build("${DOCKER_IMAGE}","-f backend/Dockerfile .")
-                    }
-
                     docker.withRegistry('https://index.docker.io/v1/',DOCKER_PASS){
+                        def dockerImage = docker.build("${DOCKER_IMAGE}","-f backend/Dockerfile .")
                         dockerImage.push("${IMAGE_TAG}")
                         dockerImage.push("latest")
                     }
