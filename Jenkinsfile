@@ -6,6 +6,14 @@ pipeline{
         jdk 'Java21'
         maven 'Maven3'
     }
+    environment{
+        APP_NAME = "PlaneSales"
+        RELEASE = "1.0.0"
+        DOCKER_USER = "lexa2hk"
+        DOCKER_PASS = credentials('dockerhub-pass')
+        DOCKER_IMAGE = "${DOCKER_USER}/${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+    }
     stages{
         stage("Workspace Cleanup"){
             steps{
@@ -40,6 +48,20 @@ pipeline{
             steps{
                 script{
                     waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
+                }
+            }
+        }
+        stage("Build & Push DockerHub Image"){
+            steps{
+                script{
+                    docker.withRegistry('',DOCKER_PASS){
+                        dockerImage = docker.build("${DOCKER_IMAGE}","-f backend/Dockerfile .")
+                    }
+
+                    docker.withRegistry('',DOCKER_PASS){
+                        dockerImage.push("${IMAGE_TAG}")
+                        dockerImage.push("latest")
+                    }
                 }
             }
         }
