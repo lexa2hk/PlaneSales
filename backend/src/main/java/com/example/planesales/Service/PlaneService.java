@@ -4,9 +4,7 @@ package com.example.planesales.Service;
 import com.example.planesales.Entity.Flight;
 import com.example.planesales.Entity.Plane;
 import com.example.planesales.Entity.TechnicalState;
-import com.example.planesales.Entity.TechnicalStatus;
 import com.example.planesales.Repository.PlaneRepository;
-import com.example.planesales.Repository.TechnicalStatusRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,6 @@ import java.util.Random;
 public class PlaneService {
     private final PlaneRepository planeRepository;
     private final FlightService flightService;
-    private final TechnicalStatusRepository technicalStatusRepository;
 
     public List<Plane> getPlanes(){
         return (List<Plane>) planeRepository.findAll();
@@ -60,7 +57,6 @@ public class PlaneService {
             Date maintenanceDate = new Date(randomMaintenanceTime);
             plane.setMaintenance(maintenanceDate);
 
-            plane.setTechnicalStatus(TechnicalState.OPERATIONAL);
 
             planeRepository.save(plane);
 
@@ -69,19 +65,5 @@ public class PlaneService {
         return planes;
     }
 
-
-
-    @Deprecated
-    public List<TechnicalStatus> initializeTechnicalStatus(){
-        List<TechnicalStatus> technicalStatuses = new LinkedList<>();
-        String[] statuses = {"Operational", "Repair", "Retired"};
-        for(String status : statuses){
-           TechnicalStatus technicalStatus = new TechnicalStatus();
-           technicalStatus.setStatus(status);
-           technicalStatuses.add(technicalStatus);
-        }
-
-        return (List<TechnicalStatus>) technicalStatusRepository.saveAll(technicalStatuses);
-    }
 
 }

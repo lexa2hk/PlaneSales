@@ -23,7 +23,6 @@ public class Airport {
     @Column(nullable = false)
     private String country;
 
-    // Constructors, getters, and setters
 
     public Airport() {
     }

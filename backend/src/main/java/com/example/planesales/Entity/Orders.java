@@ -25,9 +25,6 @@ public class Orders {
 
     private String flightRoute;
 
-//    @ManyToOne
-//    @JoinColumn(name = "payment_status_id_payment_status", nullable = false)
-//    private PaymentStatus paymentStatus;
 
     @Enumerated(EnumType.STRING)
     private PaymentState paymentStatus;
