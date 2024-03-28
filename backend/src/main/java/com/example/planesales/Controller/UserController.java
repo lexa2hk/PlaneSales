@@ -3,6 +3,7 @@ package com.example.planesales.Controller;
 import com.example.planesales.Entity.User;
 import com.example.planesales.Repository.UserRepository;
 import io.swagger.v3.oas.annotations.Hidden;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -21,6 +22,11 @@ public class UserController {
     @GetMapping
     public Iterable<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    @GetMapping("/isAdmin")
+    public boolean isAdmin() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMIN"));
     }
 
     @GetMapping("/{id}")

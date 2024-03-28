@@ -64,7 +64,7 @@ public class AdminController {
     }
 
     @PostMapping("/flights")
-    public ResponseEntity<Flight> createFlight(Flight flight) {
+    public ResponseEntity<Flight> createFlight(@RequestBody Flight flight) {
         try {
             log.info("Admin Controller: creating flight");
             Flight createdFlight = flightService.createFlight(flight);
