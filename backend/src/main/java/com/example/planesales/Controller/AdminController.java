@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
+@PreAuthorize("hasAuthority(T(com.example.planesales.Roles.Role).ADMIN)")
+//https://stackoverflow.com/questions/19303584/spring-security-preauthorization-pass-enums-in-directly
 @CrossOrigin
 @Slf4j
 @Hidden
@@ -26,6 +29,13 @@ public class AdminController {
     private final FlightService flightService;
     private final CompanyService companyService;
     private final PlaneService planeService;
+
+
+    @GetMapping("/ping")
+    @Hidden
+    public ResponseEntity<String> ping() {
+        return ResponseEntity.ok("Admin pong");
+    }
 
 
     @PostMapping("/flights/fill")

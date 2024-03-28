@@ -2,11 +2,13 @@ package com.example.planesales.Configuration;
 
 
 import com.example.planesales.Authentication.JwtAuthenticationFilter;
+import com.example.planesales.Roles.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,8 +25,8 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 //different from guide due to spring 3.1.4
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
 @RequiredArgsConstructor
-@EnableMethodSecurity
 public class SecurityConfig {
 
     @Value("${spring.websecurity.debug:false}")
@@ -51,9 +53,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-//                .cors(cors -> cors.disable())
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(WHITE_LIST_URL)
+                        req
+                                .requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
