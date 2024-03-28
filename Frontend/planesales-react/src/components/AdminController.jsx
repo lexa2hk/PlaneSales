@@ -14,6 +14,8 @@ import {
     Typography,
 } from "@mui/material";
 
+import { useJwt } from "react-jwt";
+
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:8080',
@@ -32,8 +34,31 @@ axiosInstance.interceptors.request.use(
     }
 );
 
+async function isUserAdmin() {
+    try {
+        const response = await axiosInstance.get('/api/v1/users/isAdmin');
+        console.log(response.data)
+        return response.data; // Returns true if the user is an admin, false otherwise
+    } catch (error) {
+        console.error('Error checking admin status:', error);
+        return false; // Return false in case of an error
+    }
+}
 
 const AdminController = () => {
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        const checkAdminStatus = async () => {
+            const admin = await isUserAdmin();
+            setIsAdmin(admin);
+        };
+
+        checkAdminStatus();
+    }, []);
+
+
+
     const [flights, setFlights] = useState([]);
     const [newFlight, setNewFlight] = useState({
         route: '',
@@ -56,10 +81,15 @@ const AdminController = () => {
     }, []);
 
     const handleInputChange = (e) => {
-        setNewFlight({ ...newFlight, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setNewFlight((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
     };
 
     const handleCreateFlight = async (e) => {
+        console.log('New Flight:', newFlight);
         try {
             setNewFlight({ route: '', passengerQty: 0, duration: 0 });
             const response = await axiosInstance.post('/api/v1/admin/flights', newFlight);
@@ -102,115 +132,121 @@ const AdminController = () => {
 
     return (
         <div>
-            <Typography variant="h4" gutterBottom>
+            {isAdmin ? (<div><Typography variant="h2" gutterBottom>
                 Flights
             </Typography>
-            <TableContainer component={Paper}>
-                <Table aria-label="flight table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Route</TableCell>
-                            <TableCell>Passenger Qty</TableCell>
-                            <TableCell>Duration</TableCell>
-                            <TableCell>Actions</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {flights.map((flight) => (
-                            <TableRow key={flight.idFlight}>
-                                <TableCell>
-                                    {editingFlight && editingFlight.idFlight === flight.idFlight ? (
-                                        <TextField
-                                            name="route"
-                                            value={editingFlight.route}
-                                            onChange={(e) => setEditingFlight({ ...editingFlight, route: e.target.value })}
-                                        />
-                                    ) : (
-                                        flight.route
-                                    )}
-                                </TableCell>
-                                <TableCell>
-                                    {editingFlight && editingFlight.idFlight === flight.idFlight ? (
-                                        <TextField
-                                            type="number"
-                                            name="passengerQty"
-                                            value={editingFlight.passengerQty}
-                                            onChange={(e) => setEditingFlight({ ...editingFlight, passengerQty: parseInt(e.target.value) })}
-                                        />
-                                    ) : (
-                                        flight.passengerQty
-                                    )}
-                                </TableCell>
-                                <TableCell>
-                                    {editingFlight && editingFlight.idFlight === flight.idFlight ? (
-                                        <TextField
-                                            type="number"
-                                            name="duration"
-                                            value={editingFlight.duration}
-                                            onChange={(e) => setEditingFlight({ ...editingFlight, duration: parseInt(e.target.value) })}
-                                        />
-                                    ) : (
-                                        flight.duration
-                                    )}
-                                </TableCell>
-                                <TableCell>
-                                    {editingFlight && editingFlight.idFlight === flight.idFlight ? (
-                                        <>
-                                            <Button variant="contained" color="primary" onClick={handleSaveUpdate}>
-                                                Save
-                                            </Button>
-                                            <Button variant="contained" onClick={() => setEditingFlight(handleCreateFlight())}>
-                                                Cancel
-                                            </Button>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Button variant="contained" color="primary" onClick={() => handleUpdateFlight(flight)}>
-                                                Edit
-                                            </Button>
-                                            <Button variant="contained" color="secondary" onClick={() => handleDeleteFlight(flight.idFlight)}>
-                                                Delete
-                                            </Button>
-                                        </>
-                                    )}
-                                </TableCell>
+                <TableContainer component={Paper}>
+                    <Table aria-label="flight table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Route</TableCell>
+                                <TableCell>Passenger Qty</TableCell>
+                                <TableCell>Duration</TableCell>
+                                <TableCell>Actions</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {flights.map((flight) => (
+                                <TableRow key={flight.idFlight}>
+                                    <TableCell>
+                                        {editingFlight && editingFlight.idFlight === flight.idFlight ? (
+                                            <TextField
+                                                name="route"
+                                                value={editingFlight.route}
+                                                onChange={(e) => setEditingFlight({ ...editingFlight, route: e.target.value })}
+                                            />
+                                        ) : (
+                                            flight.route
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        {editingFlight && editingFlight.idFlight === flight.idFlight ? (
+                                            <TextField
+                                                type="number"
+                                                name="passengerQty"
+                                                value={editingFlight.passengerQty}
+                                                onChange={(e) => setEditingFlight({ ...editingFlight, passengerQty: parseInt(e.target.value) })}
+                                            />
+                                        ) : (
+                                            flight.passengerQty
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        {editingFlight && editingFlight.idFlight === flight.idFlight ? (
+                                            <TextField
+                                                type="number"
+                                                name="duration"
+                                                value={editingFlight.duration}
+                                                onChange={(e) => setEditingFlight({ ...editingFlight, duration: parseInt(e.target.value) })}
+                                            />
+                                        ) : (
+                                            flight.duration
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        {editingFlight && editingFlight.idFlight === flight.idFlight ? (
+                                            <>
+                                                <Button variant="contained" color="primary" onClick={handleSaveUpdate}>
+                                                    Save
+                                                </Button>
+                                                <Button variant="contained" onClick={() => setEditingFlight(handleCreateFlight())}>
+                                                    Cancel
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Button variant="contained" color="primary" onClick={() => handleUpdateFlight(flight)}>
+                                                    Edit
+                                                </Button>
+                                                <Button variant="contained" color="secondary" onClick={() => handleDeleteFlight(flight.idFlight)}>
+                                                    Delete
+                                                </Button>
+                                            </>
+                                        )}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
 
-            <Typography variant="h5" gutterBottom>
-                Create New Flight
-            </Typography>
-            <div>
-                <TextField
-                    label="Route"
-                    name="route"
-                    value={newFlight.route}
-                    onChange={handleInputChange}
-                    margin="normal"
-                />
-                <TextField
-                    label="Passenger Qty"
-                    type="number"
-                    name="passengerQty"
-                    value={newFlight.passengerQty}
-                    onChange={handleInputChange}
-                    margin="normal"
-                />
-                <TextField
-                    label="Duration"
-                    type="number"
-                    name="duration"
-                    value={newFlight.duration}
-                    onChange={handleInputChange}
-                    margin="normal"
-                />
-                <Button variant="contained" color="primary" onClick={null}>
-                    Create
-                </Button>
-            </div>
+                <Typography variant="h5" gutterBottom>
+                    Create New Flight
+                </Typography>
+                <div>
+                    <TextField
+                        label="Route"
+                        name="route"
+                        value={newFlight.route}
+                        onChange={handleInputChange}
+                        margin="normal"
+                    />
+                    <TextField
+                        label="Passenger Qty"
+                        type="number"
+                        name="passengerQty"
+                        value={newFlight.passengerQty}
+                        onChange={handleInputChange}
+                        margin="normal"
+                    />
+                    <TextField
+                        label="Duration"
+                        type="number"
+                        name="duration"
+                        value={newFlight.duration}
+                        onChange={handleInputChange}
+                        margin="normal"
+                    />
+                    <Button variant="contained" color="primary" onClick={handleCreateFlight}>
+                        Create
+                    </Button>
+                </div>
+                </div>) : (<Typography variant="h4" gutterBottom>
+                You are  not  permitted
+            </Typography>)}
+
+
+
         </div>
     );
 };
