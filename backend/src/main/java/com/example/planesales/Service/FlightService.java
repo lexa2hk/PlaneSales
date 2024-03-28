@@ -141,4 +141,21 @@ public class FlightService {
     private Integer generateRandomDuration() {
         return random.nextInt(600) + 60;
     }
+
+    public Flight createFlight(Flight flight) {
+        return flightRepository.save(flight);
+    }
+
+    public Flight updateFlight(String flightId, Flight flight) {
+        Flight existingFlight = flightRepository.findById(flightId).orElseThrow();
+        existingFlight.setRoute(flight.getRoute());
+        existingFlight.setPassengerQty(flight.getPassengerQty());
+        existingFlight.setDuration(flight.getDuration());
+        return flightRepository.save(existingFlight);
+    }
+
+    public void deleteFlight(String flightId) {
+        flightRepository.deleteById(flightId);
+
+    }
 }

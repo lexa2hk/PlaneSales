@@ -1,6 +1,7 @@
 package com.example.planesales.Controller;
 
 import com.example.planesales.Entity.Company;
+import com.example.planesales.Entity.Flight;
 import com.example.planesales.Entity.Plane;
 import com.example.planesales.Service.CompanyService;
 import com.example.planesales.Service.FlightService;
@@ -39,6 +40,57 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping("/flights")
+    @Hidden
+    public ResponseEntity<List<Flight>> getFlights() {
+        try {
+            log.info("Admin Controller: adding flights");
+            return ResponseEntity.ok(flightService.getFlights());
+        } catch (Exception e) {
+            log.error("Admin Controller: error while getting flights" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/flights")
+    public ResponseEntity<Flight> createFlight(Flight flight) {
+        try {
+            log.info("Admin Controller: creating flight");
+            Flight createdFlight = flightService.createFlight(flight);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdFlight);
+        } catch (Exception e) {
+            log.error("Admin Controller: error while creating flight" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // Update an existing flight
+    @PutMapping("/flights/{flightId}")
+    public ResponseEntity<Flight> updateFlight(@PathVariable String flightId, @RequestBody Flight flight) {
+        try {
+            log.info("Admin Controller: updating flight with id {}", flightId);
+            Flight updatedFlight = flightService.updateFlight(flightId, flight);
+            return ResponseEntity.ok(updatedFlight);
+        } catch (Exception e) {
+            log.error("Admin Controller: error while updating flight" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // Delete a flight
+    @DeleteMapping("/flights/{flightId}")
+    public ResponseEntity<Void> deleteFlight(@PathVariable String flightId) {
+        try {
+            log.info("Admin Controller: deleting flight with id {}", flightId);
+            flightService.deleteFlight(flightId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            log.error("Admin Controller: error while deleting flight" + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
     @PostMapping("/companies/fill")
     @Hidden

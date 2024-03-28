@@ -2,6 +2,8 @@ package com.example.planesales.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -23,7 +25,7 @@ public class Flight {
     private int passengerQty;
     private Integer duration;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.ALL})
 //    @JoinTable(
 //            name = "flight_company",
 //            joinColumns = @JoinColumn(name = "flight_id_flight", nullable = false),
