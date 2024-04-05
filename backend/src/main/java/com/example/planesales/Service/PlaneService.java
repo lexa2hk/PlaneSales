@@ -3,7 +3,6 @@ package com.example.planesales.Service;
 
 import com.example.planesales.Entity.Flight;
 import com.example.planesales.Entity.Plane;
-import com.example.planesales.Entity.TechnicalState;
 import com.example.planesales.Repository.PlaneRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

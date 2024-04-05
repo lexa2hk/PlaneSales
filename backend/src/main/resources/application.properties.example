@@ -16,3 +16,4 @@ flyway.url=jdbc:postgresql://localhost:5432/planesales
 
 
 travelpayouts.token=<YOUR_TOKEN>
+travelpayouts.referral-url=https://aviasales.tp.st/niQRkt6E
