@@ -75,8 +75,8 @@ public class SecurityConfig {
 
 
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.debug(webSecurityDebug);
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.debug(webSecurityDebug);
+//    }
 }
