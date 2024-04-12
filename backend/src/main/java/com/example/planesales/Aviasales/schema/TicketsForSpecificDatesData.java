@@ -1,7 +1,12 @@
 package com.example.planesales.Aviasales.schema;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class TicketsForSpecificDatesData {
     @JsonProperty("flight_number")
     private String flightNumber;

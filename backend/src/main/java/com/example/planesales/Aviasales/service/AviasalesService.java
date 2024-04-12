@@ -9,15 +9,16 @@ import reactor.core.publisher.Flux;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 @Service
 public class AviasalesService {
     public final WebClient webClient;
+    private final FlightDataManagementService flightDataManagementService;
 
     @Autowired
-    public AviasalesService(WebClient webClient) {
+    public AviasalesService(WebClient webClient, FlightDataManagementService flightDataManagementService) {
         this.webClient = webClient;
+        this.flightDataManagementService = flightDataManagementService;
     }
 
     public Flux<TicketsForSpecificDatesResponse> getTicketsForSpecificDates(String origin, String destination,
@@ -37,8 +38,7 @@ public class AviasalesService {
                 .limit(limit)
                 .build();
 
-
-        return webClient.get()
+        Flux<TicketsForSpecificDatesResponse> response = webClient.get()
                 .uri(uriBuilder -> uriBuilder.path("/v3/prices_for_dates")
                         .queryParams(params.toQueryParams())
                         .build()
@@ -46,5 +46,10 @@ public class AviasalesService {
                 .retrieve()
                 .bodyToFlux(TicketsForSpecificDatesResponse.class)
                 .doOnError(throwable -> System.out.println(throwable.getMessage()));
+
+
+        //todo add  queueing
+        flightDataManagementService.proceedFlightData(response);
+        return response;
     }
 }
