@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { TextField, Checkbox, FormControlLabel, Button, Grid} from "@mui/material";
 
 function TicketForm({ onSubmit }) {
     const [origin, setOrigin] = useState('');
@@ -6,7 +7,7 @@ function TicketForm({ onSubmit }) {
     const [departureAt, setDepartureAt] = useState('');
     const [returnAt, setReturnAt] = useState('');
     const [oneWay, setOneWay] = useState(false);
-    const [direct, setDirect] = useState(false);
+    const [direct, setDirect] = useState(true);
     const [limit, setLimit] = useState(10);
 
     const handleSubmit = (event) => {
@@ -24,35 +25,76 @@ function TicketForm({ onSubmit }) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div>
-                <label>Origin:</label>
-                <input type="text" value={origin} onChange={(e) => setOrigin(e.target.value)} />
-            </div>
-            <div>
-                <label>Destination:</label>
-                <input type="text" value={destination} onChange={(e) => setDestination(e.target.value)} />
-            </div>
-            <div>
-                <label>Departure Date:</label>
-                <input type="date" value={departureAt} onChange={(e) => setDepartureAt(e.target.value)} />
-            </div>
-            <div>
-                <label>Return Date:</label>
-                <input type="date" value={returnAt} onChange={(e) => setReturnAt(e.target.value)} />
-            </div>
-            <div>
-                <label>One Way:</label>
-                <input type="checkbox" checked={oneWay} onChange={(e) => setOneWay(e.target.checked)} />
-            </div>
-            <div>
-                <label>Direct:</label>
-                <input type="checkbox" checked={direct} onChange={(e) => setDirect(e.target.checked)} />
-            </div>
-            <div>
-                <label>Limit:</label>
-                <input type="number" value={limit} onChange={(e) => setLimit(e.target.value)} />
-            </div>
-            <button type="submit">Search</button>
+            <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        label="Вылет"
+                        required
+                        value={origin}
+                        onChange={(e) => setOrigin(e.target.value)}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        label="Прибытие"
+                        required
+                        value={destination}
+                        onChange={(e) => setDestination(e.target.value)}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        label="Дата вылета"
+                        required
+                        type="date"
+                        value={departureAt}
+                        onChange={(e) => setDepartureAt(e.target.value)}
+                        fullWidth
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        label="Дата возвращения"
+                        required
+                        type="date"
+                        value={returnAt}
+                        onChange={(e) => setReturnAt(e.target.value)}
+                        fullWidth
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <FormControlLabel
+                        control={<Checkbox checked={oneWay} disabled onChange={(e) => setOneWay(e.target.checked)} />}
+                        label="В одну сторону"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <FormControlLabel
+                        control={<Checkbox checked={direct}  onChange={(e) => setDirect(e.target.checked)} />}
+                        label="Прямой"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        label="Количество вариантов"
+                        type="number"
+                        value={limit}
+                        onChange={(e) => setLimit(e.target.value)}
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <Button type="submit" variant="contained" color="primary">Искать</Button>
+                </Grid>
+            </Grid>
         </form>
     );
 }

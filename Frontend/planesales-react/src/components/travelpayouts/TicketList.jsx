@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 
 function TicketList({ tickets }) {
     const [convertedNames, setConvertedNames] = useState({});
@@ -30,48 +31,48 @@ function TicketList({ tickets }) {
     return (
         <div>
             <h2>Ticket List</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th>Flight Number</th>
-                    <th>Link</th>
-                    <th>Origin Airport</th>
-                    <th>Destination Airport</th>
-                    <th>Departure At</th>
-                    <th>Airline</th>
-                    <th>Destination</th>
-                    <th>Return At</th>
-                    <th>Origin</th>
-                    <th>Price</th>
-                    <th>Return Transfers</th>
-                    <th>Duration</th>
-                    <th>Duration To</th>
-                    <th>Duration Back</th>
-                    <th>Transfers</th>
-                </tr>
-                </thead>
-                <tbody>
-                {tickets.map((ticket, index) => (
-                    <tr key={index}>
-                        <td>{ticket.airline+ticket.flight_number}</td>
-                        <td><a href={"https://aviasales.ru"+ticket.link}>Купить на Aviasales</a></td>
-                        <td>{ticket.origin_airport}</td>
-                        <td>{ticket.destination_airport}</td>
-                        <td>{ticket.departure_at}</td>
-                        <td>{convertedNames[ticket.airline]}</td>
-                        <td>{ticket.destination}</td>
-                        <td>{ticket.return_at}</td>
-                        <td>{ticket.origin}</td>
-                        <td>{ticket.price}</td>
-                        <td>{ticket.return_transfers}</td>
-                        <td>{ticket.duration}</td>
-                        <td>{ticket.duration_to}</td>
-                        <td>{ticket.duration_back}</td>
-                        <td>{ticket.transfers}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Код перелета</TableCell>
+                        <TableCell>Ссылка</TableCell>
+                        <TableCell>Аэропорт вылета</TableCell>
+                        <TableCell>Аэропорт прибытия</TableCell>
+                        <TableCell>Время вылета</TableCell>
+                        <TableCell>Авиакомпания</TableCell>
+                        <TableCell>Место прибытия</TableCell>
+                        <TableCell>Время возвращения</TableCell>
+                        <TableCell>Место вылета</TableCell>
+                        <TableCell>Цена</TableCell>
+                        <TableCell>Пересадки обратно</TableCell>
+                        <TableCell>Общая длительность</TableCell>
+                        <TableCell>Длительность туда</TableCell>
+                        <TableCell>Длительность обратно</TableCell>
+                        <TableCell>Пересадки туда</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {tickets.map((ticket, index) => (
+                        <TableRow key={index}>
+                            <TableCell>{ticket.airline + ticket.flight_number}</TableCell>
+                            <TableCell><a href={"https://aviasales.ru" + ticket.link}>Купить на Aviasales</a></TableCell>
+                            <TableCell>{ticket.origin_airport}</TableCell>
+                            <TableCell>{ticket.destination_airport}</TableCell>
+                            <TableCell>{ticket.departure_at}</TableCell>
+                            <TableCell>{convertedNames[ticket.airline]}</TableCell>
+                            <TableCell>{ticket.destination}</TableCell>
+                            <TableCell>{ticket.return_at}</TableCell>
+                            <TableCell>{ticket.origin}</TableCell>
+                            <TableCell>{ticket.price}</TableCell>
+                            <TableCell>{ticket.return_transfers}</TableCell>
+                            <TableCell>{ticket.duration}</TableCell>
+                            <TableCell>{ticket.duration_to}</TableCell>
+                            <TableCell>{ticket.duration_back}</TableCell>
+                            <TableCell>{ticket.transfers}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
         </div>
     );
 }

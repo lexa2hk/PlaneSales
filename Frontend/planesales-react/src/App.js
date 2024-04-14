@@ -18,6 +18,8 @@ import AdminController from "./components/AdminController";
 import SupportRequestAdmin from "./components/SupportAdmin";
 import AirportComponent from "./components/AirportComponent";
 import TicketSearchPage from "./components/travelpayouts/TicketSearchPage";
+import NavBar from "./components/basic/NavBar";
+import Footer from "./components/basic/Footer";
 
 // Registration Component
 const RegistrationComponent = () => {
@@ -105,24 +107,24 @@ const RegistrationComponent = () => {
 };
 
 
-
 function App() {
 
 
   return (
-      <Box>
-          <Router>
-              <Routes>
-                  <Route path="/login" element={<Login/>} />
-                  <Route path="/register" element={<RegistrationComponent/>}/>
-                  <Route path="/" element={<TicketSearchPage/>} />
-                  <Route path="/admin" element={<AdminController/>} />
-                  <Route path="/admin/support" element={<SupportRequestAdmin/>} />
-                  <Route path="/admin/airport" element={<AirportComponent/>} />
-              </Routes>
-          </Router>
-      </Box>
-
+          <Box>
+              <Router>
+                  <NavBar/>
+                  <Routes>
+                      <Route path="/login" element={<Login/>} />
+                      <Route path="/register" element={<RegistrationComponent/>}/>
+                      <Route path="/" element={<TicketSearchPage/>} />
+                      <Route path="/admin" element={<AdminController/>} />
+                      <Route path="/admin/support" element={<SupportRequestAdmin/>} />
+                      <Route path="/admin/airport" element={<AirportComponent/>} />
+                  </Routes>
+                  <Footer/>
+              </Router>
+          </Box>
   );
 }
 
