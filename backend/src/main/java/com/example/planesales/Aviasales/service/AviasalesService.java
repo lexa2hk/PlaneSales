@@ -2,8 +2,10 @@ package com.example.planesales.Aviasales.service;
 
 import com.example.planesales.Aviasales.schema.TicketsForSpecificDatesParams;
 import com.example.planesales.Aviasales.schema.TicketsForSpecificDatesResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
@@ -11,15 +13,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
+@RequiredArgsConstructor
 public class AviasalesService {
     public final WebClient webClient;
     private final FlightDataManagementService flightDataManagementService;
+    private final IataService iataService;
 
-    @Autowired
-    public AviasalesService(WebClient webClient, FlightDataManagementService flightDataManagementService) {
-        this.webClient = webClient;
-        this.flightDataManagementService = flightDataManagementService;
-    }
 
     public Flux<TicketsForSpecificDatesResponse> getTicketsForSpecificDates(String origin, String destination,
                                                                             Date departureAt, Date returnAt,
@@ -48,8 +47,18 @@ public class AviasalesService {
                 .doOnError(throwable -> System.out.println(throwable.getMessage()));
 
 
-        //todo add  queueing
         flightDataManagementService.proceedFlightData(response);
+
+//        //todo вынести обработку IATAcode to name в  отдельный блок
+//        Flux<TicketsForSpecificDatesResponse> transformedResponse = response.map(ticketsForSpecificDatesResponse -> {
+//            ticketsForSpecificDatesResponse.getData().forEach(
+//                    flightData -> {
+//                        flightData.setAirline(iataService.getAirlineName(flightData.getAirline()));
+//                    }
+//            );
+//            return ticketsForSpecificDatesResponse;
+//        });
         return response;
     }
+
 }
