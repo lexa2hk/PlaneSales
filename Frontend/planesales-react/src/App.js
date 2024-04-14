@@ -17,6 +17,7 @@ import Flights from "./components/Flights";
 import AdminController from "./components/AdminController";
 import SupportRequestAdmin from "./components/SupportAdmin";
 import AirportComponent from "./components/AirportComponent";
+import TicketSearchPage from "./components/travelpayouts/TicketSearchPage";
 
 // Registration Component
 const RegistrationComponent = () => {
@@ -114,7 +115,7 @@ function App() {
               <Routes>
                   <Route path="/login" element={<Login/>} />
                   <Route path="/register" element={<RegistrationComponent/>}/>
-                  <Route path="/" element={<Flights/>} />
+                  <Route path="/" element={<TicketSearchPage/>} />
                   <Route path="/admin" element={<AdminController/>} />
                   <Route path="/admin/support" element={<SupportRequestAdmin/>} />
                   <Route path="/admin/airport" element={<AirportComponent/>} />

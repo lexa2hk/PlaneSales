@@ -29,7 +29,7 @@ const LoginComponent = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axiosInstance.post('/api/v1/auth/authenticate', {
+            const response = await axios.post('http://localhost:8080/api/v1/auth/authenticate', {
                 email,
                 password,
             });
