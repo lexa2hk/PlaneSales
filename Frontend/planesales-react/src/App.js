@@ -20,6 +20,7 @@ import AirportComponent from "./components/AirportComponent";
 import TicketSearchPage from "./components/travelpayouts/TicketSearchPage";
 import NavBar from "./components/basic/NavBar";
 import Footer from "./components/basic/Footer";
+import ReviewList from "./components/account/ReviewList";
 
 // Registration Component
 const RegistrationComponent = () => {
@@ -121,6 +122,7 @@ function App() {
                       <Route path="/admin" element={<AdminController/>} />
                       <Route path="/admin/support" element={<SupportRequestAdmin/>} />
                       <Route path="/admin/airport" element={<AirportComponent/>} />
+                      <Route path="/user/reviews" element={<ReviewList/>} />
                   </Routes>
                   <Footer/>
               </Router>
