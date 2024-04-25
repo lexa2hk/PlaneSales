@@ -19,6 +19,7 @@ public class Review {
     @Enumerated(EnumType.STRING)
     private ReviewObjective reviewObjective;
 
+    //identity of reviewing subject
     private String objectId;
 
     @Column(columnDefinition="text")

@@ -35,6 +35,17 @@ public class ReviewService {
         return reviewRepository.findById(reviewId);
     }
 
+    public List<ReviewResponse> getUserReviews(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUserName = authentication.getName();
+        System.out.println(currentUserName);
+        Optional<User> userOptional = userRepository.findByEmail(currentUserName);
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        return reviewRepository.findByUser(userOptional.get()).stream().map(this::toResponse).collect(Collectors.toList());
+    }
+
     public ReviewResponse getReviewById(Long reviewId) throws IllegalArgumentException {
         Optional<Review> reviewOptional = reviewRepository.findById(reviewId);
         if (reviewOptional.isEmpty()) {
