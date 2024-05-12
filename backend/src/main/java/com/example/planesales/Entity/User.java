@@ -1,7 +1,9 @@
 package com.example.planesales.Entity;
 
+import com.example.planesales.Aviasales.db.entity.FlightsForDates;
 import com.example.planesales.Roles.Role;
 import com.example.planesales.Token.Token;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,10 +41,14 @@ public class User implements UserDetails {
 
     private String password;
 
+//    @ManyToMany
+//    private List<FlightsForDates> flightsList;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Token> tokens;
 
     private boolean nonLocked = true;

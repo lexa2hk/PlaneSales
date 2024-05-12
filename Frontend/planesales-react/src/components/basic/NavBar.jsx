@@ -10,10 +10,11 @@ const NavBar = () => {
                     <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>PlaneSales</Link>
                 </Typography>
                 <div>
-                    <Button color="inherit" component={Link} to="/">Home</Button>
-                    <Button color="inherit" component={Link} to="/about">About</Button>
-                    <Button color="inherit" component={Link} to="/contact">Contact</Button>
-                    <Button color="inherit" component={Link} to="/dialogs">Dialogs</Button>
+                    <Button color="inherit" component={Link} to="/">Искать билеты</Button>
+                    <Button color="inherit" component={Link} to="/about">О нас</Button>
+                    <Button color="inherit" component={Link} to="/contact">Контакты</Button>
+                    <Button color="inherit" component={Link} to="/user/reviews">Личный кабинет</Button>
+                    <Button color="inherit" component={Link} to="/support">Поддержка</Button>
                 </div>
             </Toolbar>
         </AppBar>

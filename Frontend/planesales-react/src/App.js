@@ -21,6 +21,8 @@ import TicketSearchPage from "./components/travelpayouts/TicketSearchPage";
 import NavBar from "./components/basic/NavBar";
 import Footer from "./components/basic/Footer";
 import ReviewList from "./components/account/ReviewList";
+import Account from "./components/account/Account";
+import SupportForm from "./components/support/SupportForm";
 
 // Registration Component
 const RegistrationComponent = () => {
@@ -122,7 +124,10 @@ function App() {
                       <Route path="/admin" element={<AdminController/>} />
                       <Route path="/admin/support" element={<SupportRequestAdmin/>} />
                       <Route path="/admin/airport" element={<AirportComponent/>} />
-                      <Route path="/user/reviews" element={<ReviewList/>} />
+                      <Route path="/user/reviews" element={<Account/>} />
+
+                      <Route path="/flights" element={<Flights/>} />
+                      <Route path="/support" element={<SupportForm/>} />
                   </Routes>
                   <Footer/>
               </Router>

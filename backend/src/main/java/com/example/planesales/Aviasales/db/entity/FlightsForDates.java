@@ -1,11 +1,15 @@
 package com.example.planesales.Aviasales.db.entity;
 
 import com.example.planesales.Aviasales.schema.TicketsForSpecificDatesData;
+import com.example.planesales.Entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -45,5 +49,9 @@ public class FlightsForDates {
     private int durationBack;
 
     private int transfers;
+
+    @ManyToMany
+    @JsonIgnore
+    private List<User> userList;
 
 }

@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FlightsForDatesRepository extends JpaRepository<FlightsForDates, Long> {
     boolean existsByLink(String link);
+
+    FlightsForDates findByLink(String link);
 }

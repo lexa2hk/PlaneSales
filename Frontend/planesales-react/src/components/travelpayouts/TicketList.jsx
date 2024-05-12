@@ -39,7 +39,14 @@ function TicketList({ tickets }) {
     const [convertedNames, setConvertedNames] = useState({});
 
     const [open, setOpen] = useState(false);
+    const [openReview, setOpenReview] = useState(false);
+
     const [currentTicket, setCurrentTicket] = useState(null);
+
+    const [ticketBought, setTicketBought] = useState(false); // Состояние, отслеживающее, купил ли пользователь билет
+
+    const [purchasedTickets, setPurchasedTickets] = useState([]);
+
 
     const requestReview = (ticket) => (event) => {
         // event.preventDefault();  // Prevent the default link behavior
@@ -69,6 +76,11 @@ function TicketList({ tickets }) {
             console.error('Error fetching converted names:', error);
         });
     }, [tickets]);
+
+    useEffect(() => {
+        localStorage.setItem('purchasedTickets', JSON.stringify(purchasedTickets));
+    }, [purchasedTickets]);
+
 
 
     async function sendCompanyReviewRequest(reviewReq) {
@@ -127,7 +139,7 @@ function TicketList({ tickets }) {
                 </TableBody>
             </Table>
 
-            <Dialog open={open} onClose={() => setOpen(false)}>
+            <Dialog open={openReview} onClose={() => setOpenReview(false)}>
                 <DialogTitle>Хотите оставить отзыв на авиакомпанию?</DialogTitle>
                 <form onSubmit={(event) => {
                     event.preventDefault();
@@ -173,13 +185,25 @@ function TicketList({ tickets }) {
                         </Box>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => setOpen(false)}>Отмена</Button>
+                        <Button onClick={() => setOpenReview(false)}>Отмена</Button>
                         <Button type="submit">Отправить</Button>
                     </DialogActions>
                 </form>
             </Dialog>
+
+
+            <Dialog open={open} onClose={() => setOpen(false)}>
+                <DialogTitle>Купили билет?</DialogTitle>
+                <DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {setOpen(false);setOpenReview(true); setPurchasedTickets([...purchasedTickets, currentTicket]);}} variant="contained">Да</Button>
+                        <Button onClick={() => setOpen(false)} variant="contained">Нет</Button>
+                    </DialogActions>
+                </DialogContent>
+            </Dialog>
         </div>
     );
+
 }
 
 export default TicketList;
