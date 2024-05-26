@@ -29,13 +29,15 @@ services:
       - TZ=Europe/Moscow
     depends_on:
       - cw-postgres
+    networks:
+      - cw_network
     restart: unless-stopped
 
   cw-frontend:
     build: ./Frontend/planesales-react
     container_name: cw-frontend
     ports:
-      - "3000:3000"
+      - "3003:3000"
     networks:
       - cw_network
     environment:

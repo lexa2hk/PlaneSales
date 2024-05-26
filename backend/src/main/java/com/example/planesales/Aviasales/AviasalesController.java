@@ -4,6 +4,7 @@ import com.example.planesales.Aviasales.schema.TicketsForSpecificDatesResponse;
 import com.example.planesales.Aviasales.service.AviasalesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +13,7 @@ import reactor.core.publisher.Flux;
 import java.util.Date;
 
 @RestController
+@CrossOrigin
 public class AviasalesController {
     private final AviasalesService service;
 
