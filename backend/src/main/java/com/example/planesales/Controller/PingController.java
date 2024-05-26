@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "http://registry.lexa2hk.ru")
 @RequestMapping("/api/v1/ping")
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Ping", description = "Ping endpoint")

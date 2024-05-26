@@ -22,6 +22,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@CrossOrigin(origins = "http://registry.lexa2hk.ru")
 @Hidden
 public class UserController {
 

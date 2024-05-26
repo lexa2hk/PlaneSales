@@ -12,7 +12,7 @@ function TicketSearchPage() {
         console.log('Form data:', formData);
 
         try {
-            const response = await axios.get('http://localhost:8080/tickets', {
+            const response = await axios.get('http://95.165.157.208:8080/tickets', {
                 params: {
                     origin: formData.origin,
                     destination: formData.destination,
@@ -35,6 +35,8 @@ function TicketSearchPage() {
     return (
         <div>
             <h1>Ticket Search</h1>
+            <h2>ВНИМАНИЕ!</h2>
+            <p>Поля вылет и прилет строго необходимо заполнить <a href="https://www.nationsonline.org/oneworld/IATA_Codes/airport_code_list.htm">IATA-кодами</a> аэропоров</p>
             <TicketForm onSubmit={handleSubmit} />
             <TicketList tickets={tickets} />
         </div>

@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority(T(com.example.planesales.Roles.Role).ADMIN)")
 //https://stackoverflow.com/questions/19303584/spring-security-preauthorization-pass-enums-in-directly
-@CrossOrigin
+@CrossOrigin(origins = "http://registry.lexa2hk.ru")
 @Slf4j
 @Hidden
 public class AdminController {

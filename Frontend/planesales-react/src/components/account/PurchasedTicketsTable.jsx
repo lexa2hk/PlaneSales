@@ -33,7 +33,7 @@ function PurchasedTicketsTable({ purchasedTickets }) {
             const newConvertedNames = {};
             for (const ticket of purchasedTickets) {
                 try {
-                    const response = await fetch(`http://localhost:8080/iata/airline?iata=${ticket.airline}`);
+                    const response = await fetch(`http://95.165.157.208:8080/iata/airline?iata=${ticket.airline}`);
                     const data = await response.json();
                     newConvertedNames[ticket.airline] = data.name;
                 } catch (error) {

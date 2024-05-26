@@ -14,7 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.Map;
 
 @ControllerAdvice
-@CrossOrigin
+@CrossOrigin(origins = "http://registry.lexa2hk.ru")
 public class CustomErrorController implements ErrorController {
 
     private final ErrorAttributes errorAttributes;

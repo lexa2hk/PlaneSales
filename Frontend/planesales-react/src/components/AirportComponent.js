@@ -12,7 +12,7 @@ const AirportComponent = () => {
 
     const fetchAirports = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/airports');
+            const response = await axios.get('http://95.165.157.208:8080/api/airports');
             setAirports(response.data);
         } catch (error) {
             console.error('Error fetching airports:', error);
@@ -25,7 +25,7 @@ const AirportComponent = () => {
 
     const handleCreate = async () => {
         try {
-            await axios.post('http://localhost:8080/api/airports', newAirport);
+            await axios.post('http://95.165.157.208:8080/api/airports', newAirport);
             setNewAirport({ name: '', city: '', country: '' });
             fetchAirports();
         } catch (error) {
@@ -35,7 +35,7 @@ const AirportComponent = () => {
 
     const handleUpdate = async () => {
         try {
-            await axios.put(`http://localhost:8080/api/airports/${editingAirport.id}`, editingAirport);
+            await axios.put(`http://95.165.157.208:8080/api/airports/${editingAirport.id}`, editingAirport);
             setEditingAirport(null);
             fetchAirports();
         } catch (error) {
@@ -45,7 +45,7 @@ const AirportComponent = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8080/api/airports/${id}`);
+            await axios.delete(`http://95.165.157.208:8080/api/airports/${id}`);
             fetchAirports();
         } catch (error) {
             console.error('Error deleting airport:', error);

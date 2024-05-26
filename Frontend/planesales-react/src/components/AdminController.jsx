@@ -18,7 +18,7 @@ import { useJwt } from "react-jwt";
 
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://95.165.157.208:8080',
 });
 
 axiosInstance.interceptors.request.use(

@@ -35,7 +35,7 @@ const RegistrationComponent = () => {
 
     const handleRegistration = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/api/v1/auth/register', {
+            const response = await axios.post('http://95.165.157.208:8080/api/v1/auth/register', {
                 firstname: firstName,
                 lastname: lastName,
                 email,

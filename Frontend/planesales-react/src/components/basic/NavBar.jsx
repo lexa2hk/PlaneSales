@@ -11,10 +11,13 @@ const NavBar = () => {
                 </Typography>
                 <div>
                     <Button color="inherit" component={Link} to="/">Искать билеты</Button>
-                    <Button color="inherit" component={Link} to="/about">О нас</Button>
-                    <Button color="inherit" component={Link} to="/contact">Контакты</Button>
+                    {/*<Button color="inherit" component={Link} to="/about">О нас</Button>*/}
+                    {/*<Button color="inherit" component={Link} to="/contact">Контакты</Button>*/}
                     <Button color="inherit" component={Link} to="/user/reviews">Личный кабинет</Button>
                     <Button color="inherit" component={Link} to="/support">Поддержка</Button>
+
+                    <Button color="inherit" component={Link} to="/login">Вход</Button>
+                    <Button color="inherit" component={Link} to="/register">Регистрация</Button>
                 </div>
             </Toolbar>
         </AppBar>

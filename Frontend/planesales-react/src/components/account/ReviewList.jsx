@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://95.165.157.208:8080',
 });
 
 axiosInstance.interceptors.request.use(

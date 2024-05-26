@@ -18,7 +18,7 @@ import Cookies from "js-cookie";
 
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://95.165.157.208:8080',
 });
 
 axiosInstance.interceptors.request.use(
@@ -60,7 +60,7 @@ function TicketList({ tickets }) {
             const newConvertedNames = {};
             for (const ticket of tickets) {
                 try {
-                    const response = await fetch(`http://localhost:8080/iata/airline?iata=${ticket.airline}`);
+                    const response = await fetch(`http://95.165.157.208:8080/iata/airline?iata=${ticket.airline}`);
                     const data = await response.json();
                     console.log(data);
                     newConvertedNames[ticket.airline] = data.name;

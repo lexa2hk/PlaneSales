@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/flights")
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "http://registry.lexa2hk.ru")
 @Slf4j
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Flights", description = "Flights API")

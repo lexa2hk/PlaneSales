@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux;
 import java.util.Date;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://registry.lexa2hk.ru")
 public class AviasalesController {
     private final AviasalesService service;
 

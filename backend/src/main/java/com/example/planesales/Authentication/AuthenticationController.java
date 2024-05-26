@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "http://registry.lexa2hk.ru")
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;

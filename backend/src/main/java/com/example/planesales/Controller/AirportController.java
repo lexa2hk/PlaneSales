@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://registry.lexa2hk.ru")
 @RequestMapping("/api/v1/airports")
 public class AirportController {
 

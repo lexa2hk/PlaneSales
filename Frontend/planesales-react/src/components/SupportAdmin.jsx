@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080/api/v1/admin',
+    baseURL: 'http://95.165.157.208:8080/api/v1/admin',
 });
 
 axiosInstance.interceptors.request.use(

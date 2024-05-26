@@ -5,7 +5,7 @@ import { Box, Button, TextField, Typography, Snackbar } from '@mui/material';
 import { Navigate } from 'react-router-dom';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://95.165.157.208:8080',
 });
 
 axiosInstance.interceptors.request.use(
@@ -31,7 +31,7 @@ const LoginComponent = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/api/v1/auth/authenticate', {
+            const response = await axios.post('http://95.165.157.208:8080/api/v1/auth/authenticate', {
                 email,
                 password,
             });

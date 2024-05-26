@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { Box, Typography, List, ListItem, ListItemText } from '@mui/material';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://95.165.157.208:8080',
 });
 
 axiosInstance.interceptors.request.use(

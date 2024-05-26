@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/admin/support-requests")
-@CrossOrigin
+@CrossOrigin(origins = "http://registry.lexa2hk.ru")
 @RequiredArgsConstructor
 public class SupportRequestController {
 
